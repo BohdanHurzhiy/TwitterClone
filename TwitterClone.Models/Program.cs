@@ -1,12 +1,20 @@
 ﻿using System;
 
-namespace TwitterClone.Models
+namespace ModelsForTwitter
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
+            {
+                Console.WriteLine("END!!");
+            }
+            BaseOperations.CalculateAverageNumberOfLikesPerPost(1);
+            BaseOperations.CalculateMostLikesOnPosts();
+            BaseOperations.CalculateMostLikesOnAnswers();
+            BaseOperations.FindPostsWithTag("хуй");
+           // BaseOperations.CalculateAverageNumberFollowers();
         }
     }
 }
