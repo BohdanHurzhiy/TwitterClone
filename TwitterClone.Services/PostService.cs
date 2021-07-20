@@ -164,8 +164,7 @@ namespace TwitterClone.Services
             {
                 Console.WriteLine($"{tp.Id} User id: {tp.PostId} - {tp.TagId}");
             }
-        }
-        
+        }        
 
     }
 }
