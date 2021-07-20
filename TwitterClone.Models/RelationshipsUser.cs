@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ModelsForTwitter
+namespace TwitterClone.Models
 {
     public class RelationshipsUser
     {

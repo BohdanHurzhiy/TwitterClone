@@ -1,4 +1,4 @@
-﻿namespace ModelsForTwitter
+﻿namespace TwitterClone.Models
 {
     public class Tag
     {

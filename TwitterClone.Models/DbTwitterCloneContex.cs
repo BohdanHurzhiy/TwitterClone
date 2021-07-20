@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ModelsForTwitter
+namespace TwitterClone.Models
 {
     public class DbTwitterCloneContex : DbContext
     {

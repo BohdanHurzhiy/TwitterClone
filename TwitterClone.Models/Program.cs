@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ModelsForTwitter
+namespace TwitterClone.Models
 {
     class Program
     {

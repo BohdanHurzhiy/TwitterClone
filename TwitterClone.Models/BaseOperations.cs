@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ModelsForTwitter
+namespace TwitterClone.Models
 {
     public class BaseOperations
     {
