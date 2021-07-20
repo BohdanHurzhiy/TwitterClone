@@ -19,8 +19,7 @@ namespace TwitterClone.Models
 
         public DbTwitterCloneContex()
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+           Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
