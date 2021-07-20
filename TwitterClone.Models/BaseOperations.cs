@@ -117,17 +117,14 @@ namespace ModelsForTwitter
             {
                 var tagId = twitterClone.Tags
                                 .Where(t => t.TagsText == tagPost)
-                                .FirstOrDefault();
-
-                var postList = twitterClone.TagsPosts
-                                    .Where(t => t.TagId == tagId.Id);
+                                .FirstOrDefault();      
                 
-                var postsWithTags = twitterClone.TagsPosts
-                                    .Where(p => p.TagId == tagId.Id)
-                                    .Include(p => p.Posts)
+                var posts = twitterClone.TagsPosts
+                                    .Where(t => t.TagId == tagId.Id)
+                                    .Select(x => twitterClone.Posts
+                                        .Where(y => y.Id == x.PostId)
+                                        .FirstOrDefault())
                                     .ToList();
-
-              //  var posts = postList.Select(x => twitterClone.Posts.Where(y => y.Id == x.PostId).FirstOrDefault()).ToList();
 
                 //var posts = twitterClone.Posts
                 //                    .Where(post =>
