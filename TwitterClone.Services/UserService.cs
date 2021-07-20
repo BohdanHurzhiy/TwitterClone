@@ -102,10 +102,58 @@ namespace TwitterClone.Services
                                   .Where(p => p.UserId == u))
                                   .ToList();
             
+            LinkedList<Post> postsLinked = new LinkedList<Post>(posts);
+            var postLinked = postsLinked.First;
+            
             Console.WriteLine("List Posts:");
             foreach (Post p in posts)
             {
                 Console.WriteLine($"Post Id: {p.Id} UserId: {p.UserId}");
+            }
+        }
+        public void GetFollowers(int idUser)
+        {
+            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
+            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var followers = twitterClone.Relationships
+                                         .Where(r => r.FolowerId == user.Id)
+                                         .Select(f => f.FollowedId);
+
+            var users = followers.SelectMany(f => twitterClone.Users
+                                  .Where(u => u.Id == f))
+                                  .ToList();
+            Console.WriteLine("List Users:");
+            foreach (User u in users)
+            {
+                Console.WriteLine($"Post Id: {u.Id} UserId: {u.NameUser}");
+            }
+
+        }
+        public void GetSubscriptions(int idUser)
+        {
+            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
+            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var subscriptions = twitterClone.Relationships
+                                         .Where(r => r.FollowedId == user.Id)
+                                         .Select(f => f.FolowerId);
+
+            var users = subscriptions.SelectMany(f => twitterClone.Users
+                                  .Where(u => u.Id == f))
+                                  .ToList();
+            Console.WriteLine("List Users:");
+            foreach (User u in users)
+            {
+                Console.WriteLine($"Post Id: {u.Id} UserId: {u.NameUser}");
             }
         }
     }

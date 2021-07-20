@@ -73,14 +73,17 @@ namespace TwitterClone.Services
             using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
             var user = twitterClone.Posts.Where(u => u.Id == idUser).FirstOrDefault();
             var post = twitterClone.Posts.Where(p => p.Id == idPost).FirstOrDefault();
-            var Userlike = twitterClone.Likeds
-                                       .Where(l => l.UserId == idUser)
-                                       .Where(l => l.PostId == idPost)
-                                       .FirstOrDefault();
+
             if (post == null || user == null)
             {
                 throw new ArgumentException();
             }
+
+            var Userlike = twitterClone.Likeds
+                .Where(l => l.UserId == idUser)
+                .Where(l => l.PostId == idPost)
+                .FirstOrDefault();
+
 
             //var likeds = twitterClone.Likeds.ToList();
             //Console.WriteLine("List Likeds:");
@@ -165,6 +168,5 @@ namespace TwitterClone.Services
                 Console.WriteLine($"{tp.Id} User id: {tp.PostId} - {tp.TagId}");
             }
         }        
-
     }
 }

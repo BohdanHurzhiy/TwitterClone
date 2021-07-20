@@ -17,6 +17,7 @@ namespace TwitterClone.Services
             userService.Follow(1, 2);
             userService.Follow(1, 4);
             userService.Follow(2, 3);
+           // userService.GetSubscriptions(1);
             userService.GetPostsForUser(1);
         }
     }
