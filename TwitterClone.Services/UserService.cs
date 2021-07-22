@@ -89,7 +89,7 @@ namespace TwitterClone.Services
             //}
 
         }
-        public void GetPostsForUser(int idUser)
+        public void GetPostsForUser(int idUser, int numberOfPost)
         {
             var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();          
             if (user == null)
@@ -104,9 +104,9 @@ namespace TwitterClone.Services
             var posts = followings.SelectMany(u => _dbTwitterContex.Posts
                                   .Where(p => p.UserId == u))
                                   .ToList();
-            
-            LinkedList<Post> postsLinked = new LinkedList<Post>(posts);
-            var postLinked = postsLinked.First;
+            posts = posts.OrderBy(p => p.PublicationDate)
+                .Take(numberOfPost)
+                .ToList();
             
             Console.WriteLine("List Posts:");
             foreach (Post p in posts)
