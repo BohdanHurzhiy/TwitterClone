@@ -4,27 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwitterClone.Models;
+using System.IO;
 
 namespace TwitterClone.Services
 {
     class UserService
     {
+        private DbTwitterCloneContex _dbTwitterContex;
+        public UserService(DbTwitterCloneContex dbTwitterContex)
+        {
+            _dbTwitterContex = dbTwitterContex;
+        }
         public void Follow(int idUser, int targetUser)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
-            var tUser = twitterClone.Users.Where(u => u.Id == targetUser).FirstOrDefault();
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            var tUser = _dbTwitterContex.Users.Where(u => u.Id == targetUser).FirstOrDefault();
             if (user == null || tUser == null)
             {
                 throw new ArgumentException();
             }
 
-            var relationshipsUser = twitterClone.Relationships
-                                                .Where(r => r.FolowerId == user.Id)
+            var relationshipsUser = _dbTwitterContex.Relationships
+                                                .Where(r => r.FollowerId == user.Id)
                                                 .Where(r => r.FollowedId == tUser.Id)
                                                 .FirstOrDefault();
 
-            //var relationshipsUsers = twitterClone.Relationships.ToList();
+            //var relationshipsUsers = _dbTwitterContex.Relationships.ToList();
             //Console.WriteLine("List Followers:");
             //foreach (RelationshipsUser ru in relationshipsUsers)
             //{
@@ -33,13 +38,13 @@ namespace TwitterClone.Services
 
             if (relationshipsUser == null)
             {
-                twitterClone.Relationships.Add(
-                    new RelationshipsUser { FolowerId = user.Id, FollowedId = tUser.Id }
+                _dbTwitterContex.Relationships.Add(
+                    new RelationshipsUser { FollowerId = user.Id, FollowedId = tUser.Id }
                     );
-                twitterClone.SaveChanges();
+                _dbTwitterContex.SaveChanges();
             }
 
-            //relationshipsUsers = twitterClone.Relationships.ToList();
+            //relationshipsUsers = _dbTwitterContex.Relationships.ToList();
             //Console.WriteLine("List Followers:");
             //foreach (RelationshipsUser ru in relationshipsUsers)
             //{
@@ -49,20 +54,19 @@ namespace TwitterClone.Services
         }
         public void UnFollow(int idUser, int targetUser)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
-            var tUser = twitterClone.Users.Where(u => u.Id == targetUser).FirstOrDefault();
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            var tUser = _dbTwitterContex.Users.Where(u => u.Id == targetUser).FirstOrDefault();
             if (user == null || tUser == null)
             {
                 throw new ArgumentException();
             }
 
-            var relationshipsUser = twitterClone.Relationships
-                                                .Where(r => r.FolowerId == user.Id)
+            var relationshipsUser = _dbTwitterContex.Relationships
+                                                .Where(r => r.FollowerId == user.Id)
                                                 .Where(r => r.FollowedId == tUser.Id)
                                                 .FirstOrDefault();
 
-            //var relationshipsUsers = twitterClone.Relationships.ToList();
+            //var relationshipsUsers = _dbTwitterContex.Relationships.ToList();
             //Console.WriteLine("List Followers:");
             //foreach (RelationshipsUser ru in relationshipsUsers)
             //{
@@ -74,10 +78,10 @@ namespace TwitterClone.Services
             {
                 throw new ArgumentException();
             }
-            twitterClone.Relationships.Remove(relationshipsUser);
-            twitterClone.SaveChanges();
+            _dbTwitterContex.Relationships.Remove(relationshipsUser);
+            _dbTwitterContex.SaveChanges();
 
-            //relationshipsUsers = twitterClone.Relationships.ToList();
+            //relationshipsUsers = _dbTwitterContex.Relationships.ToList();
             //Console.WriteLine("List Followers:");
             //foreach (RelationshipsUser ru in relationshipsUsers)
             //{
@@ -87,18 +91,17 @@ namespace TwitterClone.Services
         }
         public void GetPostsForUser(int idUser)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();          
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();          
             if (user == null)
             {
                 throw new ArgumentException();
             }
 
-            var followings = twitterClone.Relationships
-                                         .Where(r => r.FolowerId == user.Id)
+            var followings = _dbTwitterContex.Relationships
+                                         .Where(r => r.FollowerId == user.Id)
                                          .Select(f => f.FollowedId);
 
-            var posts = followings.SelectMany(u => twitterClone.Posts
+            var posts = followings.SelectMany(u => _dbTwitterContex.Posts
                                   .Where(p => p.UserId == u))
                                   .ToList();
             
@@ -113,18 +116,18 @@ namespace TwitterClone.Services
         }
         public void GetFollowers(int idUser)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            var user = _dbTwitterContex.Users                
+                .Where(u => u.Id == idUser)                
+                .FirstOrDefault();
             if (user == null)
             {
                 throw new ArgumentException();
-            }
+            }            
+            var followers = _dbTwitterContex.Relationships
+                                         .Where(r => r.FollowedId == user.Id)
+                                         .Select(f => f.FollowerId);
 
-            var followers = twitterClone.Relationships
-                                         .Where(r => r.FolowerId == user.Id)
-                                         .Select(f => f.FollowedId);
-
-            var users = followers.SelectMany(f => twitterClone.Users
+            var users = followers.SelectMany(f => _dbTwitterContex.Users
                                   .Where(u => u.Id == f))
                                   .ToList();
             Console.WriteLine("List Users:");
@@ -136,25 +139,44 @@ namespace TwitterClone.Services
         }
         public void GetSubscriptions(int idUser)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
             if (user == null)
             {
                 throw new ArgumentException();
             }
 
-            var subscriptions = twitterClone.Relationships
+            var subscriptions = _dbTwitterContex.Relationships
                                          .Where(r => r.FollowedId == user.Id)
-                                         .Select(f => f.FolowerId);
+                                         .Select(f => f.FollowerId);
 
-            var users = subscriptions.SelectMany(f => twitterClone.Users
+            var users = subscriptions.SelectMany(f => _dbTwitterContex.Users
                                   .Where(u => u.Id == f))
                                   .ToList();
             Console.WriteLine("List Users:");
             foreach (User u in users)
             {
-                Console.WriteLine($"Post Id: {u.Id} UserId: {u.NameUser}");
+                Console.WriteLine($"User Id: {u.Id} User Id: {u.NameUser}");
             }
+        }
+        public void AddPhoto(int idUser, string pathPhoto) 
+        {
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+
+            string dirPhoto = @"~\img\";
+            string extFile = Path.GetExtension(pathPhoto);
+            string nameFile = Path.GetFileName(pathPhoto);            
+            string pathFileOnServer = Path.Combine(dirPhoto, nameFile);
+           
+            var checkPhoto = _dbTwitterContex.Photos.Where(ph => ph.PathOnTheServer == pathFileOnServer).FirstOrDefault();
+            
+            if(checkPhoto != null)
+            {
+                Photos photo = new Photos { UserId = user.Id, PathOnTheServer = pathFileOnServer, Extension = extFile };
+            }         
         }
     }
 }

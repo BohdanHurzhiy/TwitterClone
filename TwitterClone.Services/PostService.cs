@@ -9,10 +9,14 @@ namespace TwitterClone.Services
 {
     class PostService
     {
+        private DbTwitterCloneContex _dbTwitterContex;
+        public PostService(DbTwitterCloneContex dbTwitterContex)
+        {
+            _dbTwitterContex = dbTwitterContex;
+        }
         public void AddPost(int idUser, string text)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
             if (user == null)
             {
                 throw new ArgumentException();
@@ -22,7 +26,7 @@ namespace TwitterClone.Services
                 throw new ArgumentException();
             }
 
-            //var posts = twitterClone.Posts.ToList();
+            //var posts = _dbTwitterContex.Posts.ToList();
             //Console.WriteLine("List Posrts:");
             //foreach (Post p in posts)
             //{
@@ -30,10 +34,10 @@ namespace TwitterClone.Services
             //}
 
             Post post = new Post() { UserId = idUser, TextPost = text };
-            twitterClone.Posts.Add(post);
-            twitterClone.SaveChanges();
+            _dbTwitterContex.Posts.Add(post);
+            _dbTwitterContex.SaveChanges();
 
-            //posts = twitterClone.Posts.ToList();
+            //posts = _dbTwitterContex.Posts.ToList();
             //Console.WriteLine("List Posrts:");
             //foreach (Post p in posts)
             //{
@@ -43,24 +47,23 @@ namespace TwitterClone.Services
         }
         public void RemovePost(int idPost)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var post = twitterClone.Posts.Where(p => p.Id == idPost).FirstOrDefault();
+            var post = _dbTwitterContex.Posts.Where(p => p.Id == idPost).FirstOrDefault();
             if (post == null)
             {
                 throw new ArgumentException();
             }
 
-            //var posts = twitterClone.Posts.ToList();
+            //var posts = _dbTwitterContex.Posts.ToList();
             //Console.WriteLine("List Posts:");
             //foreach (Post p in posts)
             //{
             //    Console.WriteLine($"{p.Id}  {p.UserId} - {p.TextPost}");
             //}
 
-            twitterClone.Posts.Remove(post);
-            twitterClone.SaveChanges();
+            _dbTwitterContex.Posts.Remove(post);
+            _dbTwitterContex.SaveChanges();
 
-            //posts = twitterClone.Posts.ToList();
+            //posts = _dbTwitterContex.Posts.ToList();
             //Console.WriteLine("List Posts:");
             //foreach (Post p in posts)
             //{
@@ -70,22 +73,21 @@ namespace TwitterClone.Services
         }
         public void LikeUnLikePost(int idUser, int idPost)
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var user = twitterClone.Posts.Where(u => u.Id == idUser).FirstOrDefault();
-            var post = twitterClone.Posts.Where(p => p.Id == idPost).FirstOrDefault();
+            var user = _dbTwitterContex.Posts.Where(u => u.Id == idUser).FirstOrDefault();
+            var post = _dbTwitterContex.Posts.Where(p => p.Id == idPost).FirstOrDefault();
 
             if (post == null || user == null)
             {
                 throw new ArgumentException();
             }
 
-            var Userlike = twitterClone.Likeds
+            var Userlike = _dbTwitterContex.Likeds
                 .Where(l => l.UserId == idUser)
                 .Where(l => l.PostId == idPost)
                 .FirstOrDefault();
 
 
-            //var likeds = twitterClone.Likeds.ToList();
+            //var likeds = _dbTwitterContex.Likeds.ToList();
             //Console.WriteLine("List Likeds:");
             //foreach (Liked l in likeds)
             //{
@@ -94,15 +96,15 @@ namespace TwitterClone.Services
 
             if (Userlike == null)
             {
-                twitterClone.Likeds.Add(new Liked { UserId = idUser, PostId = idPost });
+                _dbTwitterContex.Likeds.Add(new Liked { UserId = idUser, PostId = idPost });
             }
             else
             {
-                twitterClone.Likeds.Remove(Userlike);
+                _dbTwitterContex.Likeds.Remove(Userlike);
             }
-            twitterClone.SaveChanges();
+            _dbTwitterContex.SaveChanges();
 
-            //likeds = twitterClone.Likeds.ToList();
+            //likeds = _dbTwitterContex.Likeds.ToList();
             //Console.WriteLine("List Likeds:");
             //foreach (Liked l in likeds)
             //{
@@ -111,40 +113,39 @@ namespace TwitterClone.Services
         }
         public void AddTagForPost(int idPost, string textTags) 
         {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var tag = twitterClone.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
+            using DbTwitterCloneContex _dbTwitterContex = new DbTwitterCloneContex();
+            var tag = _dbTwitterContex.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
             if (tag == null)
             {
-                twitterClone.Tags.Add(new Tag { TagsText = textTags });
-                twitterClone.SaveChanges();
-                tag = twitterClone.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
+                _dbTwitterContex.Tags.Add(new Tag { TagsText = textTags });
+                _dbTwitterContex.SaveChanges();
+                tag = _dbTwitterContex.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
             }
-            var tagsPost = twitterClone.TagsPosts
+            var tagsPost = _dbTwitterContex.TagsPosts
                                        .Where(tp => tp.PostId == idPost)
                                        .Where(tp => tp.TagId == tag.Id)
                                        .FirstOrDefault();
             if (tagsPost == null)
             {
-                twitterClone.TagsPosts.Add(new TagsPost { PostId = idPost, TagId = tag.Id });
-                twitterClone.SaveChanges();
+                _dbTwitterContex.TagsPosts.Add(new TagsPost { PostId = idPost, TagId = tag.Id });
+                _dbTwitterContex.SaveChanges();
             }           
         }
         public void RemoveTagForPost(int idPost, string textTags)
-        {
-            using DbTwitterCloneContex twitterClone = new DbTwitterCloneContex();
-            var tag = twitterClone.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
+        { 
+            var tag = _dbTwitterContex.Tags.Where(t => t.TagsText == textTags).FirstOrDefault();
             
             if (tag == null)
             {
                 throw new ArgumentException();
             }
 
-            var tagsPost = twitterClone.TagsPosts
+            var tagsPost = _dbTwitterContex.TagsPosts
                                        .Where(tp => tp.PostId == idPost)
                                        .Where(tp => tp.TagId == tag.Id)
                                        .FirstOrDefault();
 
-            var tagsPostList = twitterClone.TagsPosts.ToList();
+            var tagsPostList = _dbTwitterContex.TagsPosts.ToList();
             Console.WriteLine("TagsPost before Remove:");
             foreach (TagsPost tp in tagsPostList)
             {
@@ -157,16 +158,48 @@ namespace TwitterClone.Services
             }
             else 
             {
-                twitterClone.TagsPosts.Remove(tagsPost);
-                twitterClone.SaveChanges();
+                _dbTwitterContex.TagsPosts.Remove(tagsPost);
+                _dbTwitterContex.SaveChanges();
             }
 
-            tagsPostList = twitterClone.TagsPosts.ToList();
+            tagsPostList = _dbTwitterContex.TagsPosts.ToList();
             Console.WriteLine("TagsPost after Remove:");
             foreach (TagsPost tp in tagsPostList)
             {
                 Console.WriteLine($"{tp.Id} User id: {tp.PostId} - {tp.TagId}");
             }
-        }        
+        }
+        public void AddRepostToPost(int idUser,string text, int idPost) 
+        {
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+            if (text == null || text == "")
+            {
+                throw new ArgumentException();
+            }
+
+            Repost rePost = new() { UserId = idUser, TextPost = text, PostId = idPost };
+            _dbTwitterContex.RePosts.Add(rePost);
+            _dbTwitterContex.SaveChanges();
+        }
+        public void AddAnswerToPost(int idUser, string text, int idPost)
+        {
+            var user = _dbTwitterContex.Users.Where(u => u.Id == idUser).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+            if (text == null || text == "")
+            {
+                throw new ArgumentException();
+            }
+
+            Answer answer = new() { UserId = idUser, TextAnswer = text, PostId = idPost };
+            _dbTwitterContex.Answers.Add(answer);
+            _dbTwitterContex.SaveChanges();
+        }
     }
 }

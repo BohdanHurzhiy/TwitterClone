@@ -79,8 +79,8 @@ namespace TwitterClone.Models
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
             {
                 var userFollower = twitterClone.Users                                
-                                .Include(f => f.RelationshipsFolower)
-                                .Select(f => f.RelationshipsFolower.Count)
+                                .Include(f => f.Followers)
+                                .Select(f => f.Followers.Count)
                                 .ToList();
                 double? returnAnswer = userFollower.Count == 0 ? null : userFollower.Average();
                 Console.WriteLine(returnAnswer);
@@ -105,9 +105,9 @@ namespace TwitterClone.Models
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
             {
                 var userFollower = twitterClone.Users
-                                .Include(f => f.RelationshipsFollowed)
+                                .Include(f => f.Subscriptions)
                                 .ToList();
-                var avarageCount = userFollower.Average(f => f.RelationshipsFollowed.Count);
+                var avarageCount = userFollower.Average(f => f.Subscriptions.Count);
                 Console.WriteLine(avarageCount);
             }
         }
