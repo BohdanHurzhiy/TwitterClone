@@ -19,7 +19,7 @@ namespace TwitterClone.Models
 
         public DbTwitterCloneContex()
         {
-          //  Database.EnsureDeleted();
+           // Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
