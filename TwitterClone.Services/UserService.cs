@@ -97,13 +97,14 @@ namespace TwitterClone.Services
                 throw new ArgumentException();
             }
 
-            var followings = _dbTwitterContex.Relationships
-                                         .Where(r => r.FollowerId == user.Id)
-                                         .Select(f => f.FollowedId);
+            var followings = _dbTwitterContex.Relationships 
+                .Where(r => r.FollowerId == user.Id)
+                .Select(f => f.FollowedId);
 
             var posts = followings.SelectMany(u => _dbTwitterContex.Posts
                                   .Where(p => p.UserId == u))
                                   .ToList();
+            
             posts = posts.OrderBy(p => p.PublicationDate)
                 .Take(numberOfPost)
                 .ToList();
@@ -173,7 +174,7 @@ namespace TwitterClone.Services
            
             var checkPhoto = _dbTwitterContex.Photos.Where(ph => ph.PathOnTheServer == pathFileOnServer).FirstOrDefault();
             
-            if(checkPhoto != null)
+            if (checkPhoto != null)
             {
                 Photos photo = new Photos { UserId = user.Id, PathOnTheServer = pathFileOnServer, Extension = extFile };
             }         
