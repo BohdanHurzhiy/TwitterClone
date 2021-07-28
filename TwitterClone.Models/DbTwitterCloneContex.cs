@@ -17,15 +17,22 @@ namespace TwitterClone.Models
         public DbSet<TagsPost> TagsPosts { get; set; }
 
 
+        public DbTwitterCloneContex(DbContextOptions<DbTwitterCloneContex> options)
+            : base(options)
+        { }
+
         public DbTwitterCloneContex()
         {
            // Database.EnsureDeleted();
-            Database.EnsureCreated();
+           Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database = DbTwitterClone;Trusted_Connection = True;");
+            if (!optionsBuilder.IsConfigured) 
+            { 
+                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database = DbTwitterClone;Trusted_Connection = True;");
+            }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
