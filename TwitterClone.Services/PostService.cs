@@ -72,53 +72,62 @@ namespace TwitterClone.Services
             }
             _dbTwitterContex.SaveChanges();
         }
-        public void AddTagForPost(int idPost, string textTags) 
-        {            
-            var tag = _dbTwitterContex.Tags
-                .Where(t => t.TagsText == textTags)                
+        public void AddTagForPost(int idPost, Tag tag) 
+        {
+            if (tag == null)
+            {
+                throw new ArgumentException();
+            }    
+
+            var tagInBase = _dbTwitterContex.Tags
+                .Where(t => t.TagsText == tag.TagsText)                
                 .FirstOrDefault();
             
-            var post = _dbTwitterContex.Posts
+            var postInBase = _dbTwitterContex.Posts
                 .Where(p => p.Id == idPost)
                 .FirstOrDefault();
 
             List<Post> posts;
 
-            if (tag == null)
+            if (tagInBase == null)
             {
-                posts = new List<Post> {post};
-                var createTag = new Tag { TagsText = textTags, Posts = posts };
+                posts = new List<Post> { postInBase };
+                var createTag = new Tag { TagsText = tag.TagsText, Posts = posts };
 
                 _dbTwitterContex.Tags.Add(createTag);     
             }
-            else if (tag.Posts == null)
+            else if (tagInBase.Posts == null)
             {
-                posts = new List<Post> { post };  
-                tag.Posts = posts;                   
+                posts = new List<Post> { postInBase };
+                tagInBase.Posts = posts;                   
             }
-            else if (!tag.Posts.Contains(post))
+            else if (!tagInBase.Posts.Contains(postInBase))
             {
-                tag.Posts.Add(post);                
+                tagInBase.Posts.Add(postInBase);                
             }
 
             _dbTwitterContex.SaveChanges();
 
         }
-        public void RemoveTagForPost(int idPost, string textTags)
-        { 
-            var tag = _dbTwitterContex.Tags
-                .Where(t => t.TagsText == textTags)
-                .FirstOrDefault();
-            var post = _dbTwitterContex.Posts
-                .Where(p => p.Id == idPost)
-                .FirstOrDefault();
-            if (tag == null || post == null)
+        public void RemoveTagForPost(int idPost, Tag tag)
+        {
+            if (tag == null)
             {
                 throw new ArgumentException();
             }
-            if (tag.Posts.Contains(post))
+            var tagInBase = _dbTwitterContex.Tags
+                .Where(t => t.TagsText == tag.TagsText)
+                .FirstOrDefault();
+            var postInBase = _dbTwitterContex.Posts
+                .Where(p => p.Id == idPost)
+                .FirstOrDefault();
+            if (tagInBase == null || postInBase == null)
             {
-                tag.Posts.Remove(post);
+                throw new ArgumentException();
+            }
+            if (tagInBase.Posts.Contains(postInBase))
+            {
+                tagInBase.Posts.Remove(postInBase);
             }
             else
             {
@@ -141,7 +150,7 @@ namespace TwitterClone.Services
 
                     
         }
-        public void AddRepostToPost(int idUser,string text, int idPost) 
+        public void AddRepostToPost(int idUser, string text, int idPost)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)

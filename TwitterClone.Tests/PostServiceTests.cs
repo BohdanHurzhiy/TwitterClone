@@ -42,7 +42,7 @@ namespace TwitterClone.Tests
         {
             var options = GetOptions();
             var dbContex = new DbTwitterCloneContex(options);
-
+            var tag = new Tag { Id = 1, TagsText = "Some Tag" };
             dbContex.Users.Add(
                 new User {
                     Id = 1 
@@ -54,17 +54,12 @@ namespace TwitterClone.Tests
                     TextPost = "Post for test add Tag"
                 }
                 );
-            dbContex.Tags.Add(
-                new Tag
-                {
-                    Id = 1,                   
-                    TagsText = "Some Tag"
-                }
-                );
+            dbContex.Tags.Add(tag);
+                
             dbContex.SaveChanges();              
             
             PostService postService = new PostService(dbContex);
-            postService.AddTagForPost(1, "Some Tag");                     
+            postService.AddTagForPost(1, tag);
 
             /*var postWithTag = dbContex.TagsPosts
                 .Where(tp => tp.PostId == 1)               
@@ -76,14 +71,9 @@ namespace TwitterClone.Tests
 
             var post1 = dbContex.Posts
                 .Where(p => p.Id == 1)
-                .Include(p => p.TagsPosts)
-                .FirstOrDefault();
-            
-            var tagInPost1 = post1.TagsPosts
-                .Where(tp => tp.TagId == 1)               
-                .FirstOrDefault();
-            
-            Assert.NotNull(tagInPost1);
+                .FirstOrDefault();           
+                            
+            Assert.Equal(1, post1.Tags.Count);
         }
     }
 }
