@@ -40,7 +40,7 @@ namespace TwitterClone.Models
             modelBuilder.Entity<Post>(PostConfigure);
             modelBuilder.Entity<Liked>(LikedConfigure);
             modelBuilder.Entity<Tag>(TagConfigure);
-            modelBuilder.Entity<TagsPost>(TagsPostConfigure);
+           // modelBuilder.Entity<TagsPost>(TagsPostConfigure);
         }
         // конфигурация для типа User
         public void UserConfigure(EntityTypeBuilder<User> builder)
@@ -124,24 +124,24 @@ namespace TwitterClone.Models
                     new() {Id = 4, TagsText = "тег4" }
                 });
         }
-        public void TagsPostConfigure(EntityTypeBuilder<TagsPost> builder)
-        {
-            builder.HasData(
-                new TagsPost[]
-                {
-                    new() {Id = 1, PostId = 1, TagId = 1 },
-                    new() {Id = 2, PostId = 1, TagId = 2 },
-                    new() {Id = 3, PostId = 1, TagId = 3 },
-                    new() {Id = 4, PostId = 2, TagId = 4 },
-                    new() {Id = 5, PostId = 2, TagId = 1 },
-                    new() {Id = 6, PostId = 3, TagId = 3 },
-                    new() {Id = 7, PostId = 4, TagId = 3 },
-                    new() {Id = 8, PostId = 5, TagId = 4 },
-                    new() {Id = 9, PostId = 6, TagId = 1 },
-                    new() {Id = 10, PostId = 7, TagId = 4 },
-                    new() {Id = 11, PostId = 8, TagId = 2 }
-                });
-        }
+        //public void TagsPostConfigure(EntityTypeBuilder<TagsPost> builder)
+        //{
+        //    builder.HasData(
+        //        new TagsPost[]
+        //        {
+        //            new() {Id = 1, PostId = 1, TagId = 1 },
+        //            new() {Id = 2, PostId = 1, TagId = 2 },
+        //            new() {Id = 3, PostId = 1, TagId = 3 },
+        //            new() {Id = 4, PostId = 2, TagId = 4 },
+        //            new() {Id = 5, PostId = 2, TagId = 1 },
+        //            new() {Id = 6, PostId = 3, TagId = 3 },
+        //            new() {Id = 7, PostId = 4, TagId = 3 },
+        //            new() {Id = 8, PostId = 5, TagId = 4 },
+        //            new() {Id = 9, PostId = 6, TagId = 1 },
+        //            new() {Id = 10, PostId = 7, TagId = 4 },
+        //            new() {Id = 11, PostId = 8, TagId = 2 }
+        //        });
+        //}
 
     }
 }
