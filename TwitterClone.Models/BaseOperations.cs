@@ -117,13 +117,11 @@ namespace TwitterClone.Models
             {
                 var tagId = twitterClone.Tags
                                 .Where(t => t.TagsText == tagPost)
-                                .FirstOrDefault();      
-                
-                var posts = twitterClone.TagsPosts
-                                    .Where(t => t.TagId == tagId.Id)
-                                    .Select(x => twitterClone.Posts
-                                        .Where(y => y.Id == x.PostId)
-                                        .FirstOrDefault())
+                                .FirstOrDefault();
+
+                var posts = twitterClone.Tags
+                                    .Where(t => t.TagsText == tagPost)
+                                    .Select(t => t.Posts)
                                     .ToList();
 
                 //var posts = twitterClone.Posts

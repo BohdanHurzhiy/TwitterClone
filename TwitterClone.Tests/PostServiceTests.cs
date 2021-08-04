@@ -23,11 +23,11 @@ namespace TwitterClone.Tests
             var dbContex = new DbTwitterCloneContex(options);
             
             dbContex.Users.Add(new User { Id = 1 });
-            dbContex.SaveChanges();
-                
-            PostService postService = new PostService(dbContex);                
+            dbContex.SaveChanges();    
+            
+            PostService postService = new PostService(dbContex);
             postService.AddPost(1, "Some text for post");
-                        
+
             var equalPost = dbContex.Posts
                 .Where(p => p.UserId == 1)
                 .Where(p => p.TextPost == "Some text for post")
@@ -36,6 +36,7 @@ namespace TwitterClone.Tests
             Assert.Equal("Some text for post", equalPost.TextPost);
             Assert.Equal(1, equalPost.UserId);            
         }
+
         [Fact]
         public void Can_Add_Tag_For_Post()
         {
@@ -48,23 +49,41 @@ namespace TwitterClone.Tests
                 });
             dbContex.Posts.Add(
                 new Post {  
+                    Id = 1,
                     UserId = 1,
                     TextPost = "Post for test add Tag"
                 }
-                );      
+                );
+            dbContex.Tags.Add(
+                new Tag
+                {
+                    Id = 1,                   
+                    TagsText = "Some Tag"
+                }
+                );
             dbContex.SaveChanges();              
             
-            var postTest = dbContex.Posts
-                .Where(p => p.TextPost == "Post for test add Tag")
-                .FirstOrDefault();
             PostService postService = new PostService(dbContex);
-            postService.AddTagForPost(postTest.Id, "Some Tag");               
-            
-            var equalTags = dbContex.Tags
-                .Where(t => t.TagsText == "Some Tag")
-                .FirstOrDefault();
+            postService.AddTagForPost(1, "Some Tag");                     
 
-            Assert.Equal("Some Tag", equalTags.TagsText);
+            /*var postWithTag = dbContex.TagsPosts
+                .Where(tp => tp.PostId == 1)               
+                .FirstOrDefault();
+            
+            var tagInPost = dbContex.Tags
+              .Where(t => t.Id == postWithTag.TagId)
+              .FirstOrDefault();*/
+
+            var post1 = dbContex.Posts
+                .Where(p => p.Id == 1)
+                .Include(p => p.TagsPosts)
+                .FirstOrDefault();
+            
+            var tagInPost1 = post1.TagsPosts
+                .Where(tp => tp.TagId == 1)               
+                .FirstOrDefault();
+            
+            Assert.NotNull(tagInPost1);
         }
     }
 }

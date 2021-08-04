@@ -14,7 +14,7 @@ namespace TwitterClone.Models
         public DbSet<Photos> Photos { get; set; }
         public DbSet<RelationshipsUser> Relationships { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<TagsPost> TagsPosts { get; set; }
+       // public DbSet<TagsPost> TagsPosts { get; set; }
 
 
         public DbTwitterCloneContex(DbContextOptions<DbTwitterCloneContex> options)
@@ -23,7 +23,7 @@ namespace TwitterClone.Models
 
         public DbTwitterCloneContex()
         {
-           // Database.EnsureDeleted();
+           Database.EnsureDeleted();
            Database.EnsureCreated();
         }
 
@@ -85,6 +85,10 @@ namespace TwitterClone.Models
                     new() {Id = 15, UserId = 4, TextPost = "Some Text User 4" },
                     new() {Id = 16, UserId = 1, TextPost = "Some Text User 1" }
                 });
+            builder
+                .HasMany(p => p.Tags)
+                .WithMany(t => t.Posts)
+                .UsingEntity(t => t.ToTable("TagsPosts"));
 
         }
         public void LikedConfigure(EntityTypeBuilder<Liked> builder)
@@ -114,10 +118,10 @@ namespace TwitterClone.Models
             builder.HasData(
                 new Tag[]
                 {
-                    new() {Id = 1, TagsText = "хуй" },
-                    new() {Id = 2, TagsText = "Хуй" },
-                    new() {Id = 3, TagsText = "Жопа" },
-                    new() {Id = 4, TagsText = "Серега" }
+                    new() {Id = 1, TagsText = "тег1" },
+                    new() {Id = 2, TagsText = "тег2" },
+                    new() {Id = 3, TagsText = "тег3" },
+                    new() {Id = 4, TagsText = "тег4" }
                 });
         }
         public void TagsPostConfigure(EntityTypeBuilder<TagsPost> builder)

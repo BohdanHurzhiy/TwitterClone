@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TwitterClone.Models;
+using System.Collections.Generic;
 
 namespace TwitterClone.Services
 {
@@ -74,54 +75,69 @@ namespace TwitterClone.Services
         public void AddTagForPost(int idPost, string textTags) 
         {            
             var tag = _dbTwitterContex.Tags
-                .Where(t => t.TagsText == textTags)
+                .Where(t => t.TagsText == textTags)                
                 .FirstOrDefault();
+            
+            var post = _dbTwitterContex.Posts
+                .Where(p => p.Id == idPost)
+                .FirstOrDefault();
+
+            List<Post> posts;
 
             if (tag == null)
             {
-                _dbTwitterContex.Tags.Add(new Tag { TagsText = textTags });
-                _dbTwitterContex.SaveChanges();
+                posts = new List<Post> {post};
+                var createTag = new Tag { TagsText = textTags, Posts = posts };
 
-                tag = _dbTwitterContex.Tags
-                    .Where(t => t.TagsText == textTags)
-                    .FirstOrDefault();
+                _dbTwitterContex.Tags.Add(createTag);     
             }
-            var tagsPost = _dbTwitterContex.TagsPosts
-                .Where(tp => tp.PostId == idPost)
-                .Where(tp => tp.TagId == tag.Id)
-                .FirstOrDefault();
-
-            if (tagsPost == null)
+            else if (tag.Posts == null)
             {
-                _dbTwitterContex.TagsPosts.Add(new TagsPost { PostId = idPost, TagId = tag.Id });
-                _dbTwitterContex.SaveChanges();
-            }           
+                posts = new List<Post> { post };  
+                tag.Posts = posts;                   
+            }
+            else if (!tag.Posts.Contains(post))
+            {
+                tag.Posts.Add(post);                
+            }
+
+            _dbTwitterContex.SaveChanges();
+
         }
         public void RemoveTagForPost(int idPost, string textTags)
         { 
             var tag = _dbTwitterContex.Tags
                 .Where(t => t.TagsText == textTags)
                 .FirstOrDefault();
-            
-            if (tag == null)
+            var post = _dbTwitterContex.Posts
+                .Where(p => p.Id == idPost)
+                .FirstOrDefault();
+            if (tag == null || post == null)
             {
                 throw new ArgumentException();
             }
-
-            var tagsPost = _dbTwitterContex.TagsPosts
-                .Where(tp => tp.PostId == idPost)
-                .Where(tp => tp.TagId == tag.Id)
-                .FirstOrDefault();            
-            
-            if (tagsPost == null)
+            if (tag.Posts.Contains(post))
+            {
+                tag.Posts.Remove(post);
+            }
+            else
             {
                 throw new ArgumentException();
             }
-            else 
-            {
-                _dbTwitterContex.TagsPosts.Remove(tagsPost);
-                _dbTwitterContex.SaveChanges();
-            }
+            //var tagsPost = _dbTwitterContex.TagsPosts
+            //    .Where(tp => tp.PostId == idPost)
+            //    .Where(tp => tp.TagId == tag.Id)
+            //    .FirstOrDefault();            
+            
+            //if (tagsPost == null)
+            //{
+            //    throw new ArgumentException();
+            //}
+            //else 
+            //{
+            //    _dbTwitterContex.TagsPosts.Remove(tagsPost);
+            //    _dbTwitterContex.SaveChanges();
+            //}
 
                     
         }
