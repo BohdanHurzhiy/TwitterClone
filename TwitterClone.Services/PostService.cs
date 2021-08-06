@@ -8,10 +8,12 @@ namespace TwitterClone.Services
     public class PostService
     {
         private DbTwitterCloneContex _dbTwitterContex;
+        
         public PostService(DbTwitterCloneContex dbTwitterContex)
         {
             _dbTwitterContex = dbTwitterContex;
         }
+        
         public void AddPost(int idUser, string text)
         {
             var user = _dbTwitterContex.Users

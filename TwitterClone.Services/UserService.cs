@@ -8,10 +8,12 @@ namespace TwitterClone.Services
     class UserService
     {
         private DbTwitterCloneContex _dbTwitterContex;
+        
         public UserService(DbTwitterCloneContex dbTwitterContex)
         {
             _dbTwitterContex = dbTwitterContex;
         }
+        
         public void Follow(int idUser, int targetUser)
         {
             var user = _dbTwitterContex.Users
@@ -65,6 +67,7 @@ namespace TwitterClone.Services
             _dbTwitterContex.SaveChanges();            
 
         }
+        
         public void GetPostsForUser(int idUser, int numberOfPost)
         {
             var user = _dbTwitterContex.Users
@@ -88,15 +91,17 @@ namespace TwitterClone.Services
                 .Take(numberOfPost)
                 .ToList(); 
         }
+        
         public void GetFollowers(int idUser)
         {
             var user = _dbTwitterContex.Users                
-                .Where(u => u.Id == idUser)                
+                .Where(u => u.Id == idUser)         
                 .FirstOrDefault();
             if (user == null)
             {
                 throw new ArgumentException();
-            }            
+            }
+
             var followers = _dbTwitterContex.Relationships
                 .Where(r => r.FollowedId == user.Id)
                 .Select(f => f.FollowerId);
@@ -106,6 +111,7 @@ namespace TwitterClone.Services
                 .Where(u => u.Id == f))
                 .ToList();
         }
+        
         public void GetSubscriptions(int idUser)
         {
             var user = _dbTwitterContex.Users
@@ -125,6 +131,7 @@ namespace TwitterClone.Services
                 .Where(u => u.Id == f))
                 .ToList();           
         }
+        
         public void AddPhoto(int idUser, string pathPhoto) 
         {
             var user = _dbTwitterContex.Users

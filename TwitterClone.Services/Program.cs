@@ -9,16 +9,16 @@ namespace TwitterClone.Services
         {
             DbTwitterCloneContex dbTwitterCloneContex = new DbTwitterCloneContex();
             PostService postService = new PostService(dbTwitterCloneContex);
-            postService.AddPost(1, "some text");
-            postService.AddTagForPost(1, 1);
+            //postService.AddPost(1, "some text");
+            //postService.AddTagForPost(1, 1);
 
             UserService userService = new(dbTwitterCloneContex);
             userService.Follow(1, 2);
             userService.Follow(1, 4);
             userService.Follow(2, 1);
             //userService.GetSubscriptions(1);
-            //userService.GetFollowers(1);
-            userService.GetPostsForUser(1, 10);
+            userService.GetFollowers(1);
+            //userService.GetPostsForUser(1, 10);
         }
     }
 }
