@@ -16,6 +16,6 @@ namespace TwitterClone.Models
         public virtual ICollection<Answer> Answers { get; set; }       
         public virtual ICollection<Repost> RePosts { get; set; }        
         public virtual ICollection<Liked> Likes { get; set; }
-        public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

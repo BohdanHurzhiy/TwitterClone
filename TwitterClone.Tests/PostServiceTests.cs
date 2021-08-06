@@ -54,20 +54,17 @@ namespace TwitterClone.Tests
                     TextPost = "Post for test add Tag"
                 }
                 );
-            dbContex.Tags.Add(tag);
+            dbContex.Tags.Add(
+                new Tag {
+                    Id = 1,
+                    TagsText = "Text for Tag"
+                }
+                );
                 
             dbContex.SaveChanges();              
             
             PostService postService = new PostService(dbContex);
-            postService.AddTagForPost(1, tag);
-
-            /*var postWithTag = dbContex.TagsPosts
-                .Where(tp => tp.PostId == 1)               
-                .FirstOrDefault();
-            
-            var tagInPost = dbContex.Tags
-              .Where(t => t.Id == postWithTag.TagId)
-              .FirstOrDefault();*/
+            postService.AddTagForPost(1, 1);
 
             var post1 = dbContex.Posts
                 .Where(p => p.Id == 1)
