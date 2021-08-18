@@ -28,6 +28,7 @@ namespace TwitterClone.Models
                 Console.WriteLine(avarageCount);                
             }            
         }
+        
         static public void CalculateMostLikesOnPosts()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -39,6 +40,7 @@ namespace TwitterClone.Models
                 Console.WriteLine(countPosts.Max());
             }
         }
+        
         static public void CalculateMostLikesOnAnswers()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -51,6 +53,7 @@ namespace TwitterClone.Models
                 
             }
         }
+        
         static public void CalculateMostRepostInPost()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -62,6 +65,7 @@ namespace TwitterClone.Models
                 Console.WriteLine(returnAnswer);
             }
         }
+       
         static public void CalculateMostAnswersInPost()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -74,6 +78,7 @@ namespace TwitterClone.Models
             }
             
         }
+        
         static public void CalculateAverageNumberFollowers()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -86,6 +91,7 @@ namespace TwitterClone.Models
                 Console.WriteLine(returnAnswer);
             }
         }
+        
         static public void TakeSomeMostPopularUsers(int countUser)
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -93,6 +99,7 @@ namespace TwitterClone.Models
                
             }
         }
+        
         static public void TakeSomeMostPopularPost(int countUser)
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -100,6 +107,7 @@ namespace TwitterClone.Models
 
             }
         }
+       
         static public void CalculateAverageNumberFollowed()
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
@@ -111,6 +119,7 @@ namespace TwitterClone.Models
                 Console.WriteLine(avarageCount);
             }
         }
+       
         static public void FindPostsWithTag(string tagPost)
         {
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())

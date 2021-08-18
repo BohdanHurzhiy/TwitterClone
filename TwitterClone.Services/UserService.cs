@@ -2,6 +2,7 @@
 using System.Linq;
 using TwitterClone.Models;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TwitterClone.Services
 {
@@ -68,7 +69,7 @@ namespace TwitterClone.Services
 
         }
         
-        public void GetPostsForUser(int idUser, int numberOfPost)
+        public ICollection<Post> GetPostsForUser(int idUser, int numberOfPost)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -89,10 +90,11 @@ namespace TwitterClone.Services
             
             posts = posts.OrderBy(p => p.PublicationDate)
                 .Take(numberOfPost)
-                .ToList(); 
+                .ToList();
+            return posts;
         }
         
-        public void GetFollowers(int idUser)
+        public ICollection<User> GetFollowers(int idUser)
         {
             var user = _dbTwitterContex.Users                
                 .Where(u => u.Id == idUser)         
@@ -110,9 +112,10 @@ namespace TwitterClone.Services
                 .SelectMany(f => _dbTwitterContex.Users
                 .Where(u => u.Id == f))
                 .ToList();
+            return users;
         }
         
-        public void GetSubscriptions(int idUser)
+        public ICollection<User> GetSubscriptions(int idUser)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -129,7 +132,8 @@ namespace TwitterClone.Services
             var users = subscriptions
                 .SelectMany(f => _dbTwitterContex.Users
                 .Where(u => u.Id == f))
-                .ToList();           
+                .ToList();
+            return users;
         }
         
         public void AddPhoto(int idUser, string pathPhoto) 

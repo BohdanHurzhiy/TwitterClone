@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using TwitterClone.Services.ServiceInterface;
 using TwitterClone.Models;
-using System.Collections.Generic;
 
 namespace TwitterClone.Services
 {
-    public class PostService
+    public class PostService : IPostService
     {
         private DbTwitterCloneContex _dbTwitterContex;
         
