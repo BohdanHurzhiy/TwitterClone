@@ -3,10 +3,11 @@ using System.Linq;
 using TwitterClone.Models;
 using System.IO;
 using System.Collections.Generic;
+using TwitterClone.Services.ServiceInterface;
 
 namespace TwitterClone.Services
 {
-    class UserService
+    class UserService : IUserService
     {
         private DbTwitterCloneContex _dbTwitterContex;
         
