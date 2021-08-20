@@ -21,6 +21,7 @@ namespace TwitterClone.ASP.Controllers
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
         public IActionResult Create() => View();
+        
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -76,6 +77,7 @@ namespace TwitterClone.ASP.Controllers
 
             return NotFound();
         }
+        
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {

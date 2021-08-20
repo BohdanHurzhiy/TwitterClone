@@ -27,10 +27,21 @@ namespace TwitterClone.ASP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DbTwitterCloneContex>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            options.UseSqlServer( 
+                Configuration.GetConnectionString("DefaultConnection")
+                ));
+            
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DbTwitterCloneContex>();
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                        Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
 
             services.AddControllersWithViews();
         }
