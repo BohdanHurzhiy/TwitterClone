@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using TwitterClone.Models;
+using TwitterClone.ASP.Models;
 using System.IO;
 using System.Collections.Generic;
-using TwitterClone.Services.ServiceInterface;
+using TwitterClone.ASP.Services.ServiceInterface;
 
-namespace TwitterClone.Services
+namespace TwitterClone.ASP.Services
 {
     public class UserService : IUserService
     {
@@ -16,7 +16,7 @@ namespace TwitterClone.Services
             _dbTwitterContex = dbTwitterContex;
         }
         
-        public void Follow(int idUser, int targetUser)
+        public void Follow(string idUser, string targetUser)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -42,7 +42,7 @@ namespace TwitterClone.Services
             }           
 
         }
-        public void UnFollow(int idUser, int targetUser)
+        public void UnFollow(string idUser, string targetUser)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -70,7 +70,7 @@ namespace TwitterClone.Services
 
         }
         
-        public ICollection<Post> GetPostsForUser(int idUser, int numberOfPost)
+        public ICollection<Post> GetPostsForUser(string idUser, int numberOfPost)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -95,7 +95,7 @@ namespace TwitterClone.Services
             return posts;
         }
         
-        public ICollection<User> GetFollowers(int idUser)
+        public ICollection<User> GetFollowers(string idUser)
         {
             var user = _dbTwitterContex.Users                
                 .Where(u => u.Id == idUser)         
@@ -116,7 +116,7 @@ namespace TwitterClone.Services
             return users;
         }
         
-        public ICollection<User> GetSubscriptions(int idUser)
+        public ICollection<User> GetSubscriptions(string idUser)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -137,7 +137,7 @@ namespace TwitterClone.Services
             return users;
         }
         
-        public void AddPhoto(int idUser, string pathPhoto) 
+        public void AddPhoto(string idUser, string pathPhoto) 
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)

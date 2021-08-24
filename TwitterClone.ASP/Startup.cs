@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TwitterClone.ASP.Models;
+using TwitterClone.ASP.Services;
+using TwitterClone.ASP.Services.ServiceInterface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
 namespace TwitterClone.ASP
@@ -42,8 +37,25 @@ namespace TwitterClone.ASP
                     options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
                 });
+           
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+                options.SignIn.RequireConfirmedEmail = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+            });
 
             services.AddControllersWithViews();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPostService, PostService>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -56,7 +68,7 @@ namespace TwitterClone.ASP
             app.UseRouting();
 
             app.UseAuthentication();  
-            app.UseAuthorization();
+            app.UseAuthorization();           
 
             app.UseEndpoints(endpoints =>
             {

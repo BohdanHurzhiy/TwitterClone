@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TwitterClone.ASP.Models;
 using TwitterClone.ASP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwitterClone.ASP.Controllers
 {
+    [Authorize]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;

@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using TwitterClone.ASP.Models;
 using TwitterClone.ASP.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwitterClone.ASP.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         UserManager<User> _userManager;

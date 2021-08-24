@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Security.Claims;
+using WebMatrix.WebData;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TwitterClone.ASP.Controllers
 {
+    [Authorize]   
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -97,6 +100,16 @@ namespace TwitterClone.ASP.Controllers
         {
             // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync();
+
+            //var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
+            var siteCookies = HttpContext.Request.Cookies.Keys;
+            foreach (var cookie in siteCookies)
+            {
+                Response.Cookies.Delete(cookie);
+            }
+
+
             return RedirectToAction("Index", "Home");
         }
         

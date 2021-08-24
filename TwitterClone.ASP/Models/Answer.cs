@@ -6,7 +6,7 @@ namespace TwitterClone.ASP.Models
     {
         public int Id { get; set; }
         public int? PostId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string TextAnswer { get; set; }
         public int NumberLikes { get; set; }       
 

@@ -15,7 +15,7 @@ namespace TwitterClone.ASP.Models
         {
             this._dbContex = dbContex;
         }
-        static public void CalculateAverageNumberOfLikesPerPost(int userID)
+        static public void CalculateAverageNumberOfLikesPerPost(string userID)
         { 
             using (DbTwitterCloneContex twitterClone = new DbTwitterCloneContex())
             {
