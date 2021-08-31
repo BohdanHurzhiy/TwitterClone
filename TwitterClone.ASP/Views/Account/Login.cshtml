@@ -1,9 +1,16 @@
 ﻿@model TwitterClone.ASP.ViewModels.LoginViewModel
 
+<link rel="stylesheet" href="~/lib/fontawesome/css/all.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/brands.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/regular.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/solid.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/svg-with-js.css">
+<link rel="stylesheet" href="~/lib/fontawesome/css/v4-shims.css">
+
 <div class="row">
     <div class="col-md-6">
         <h1>Account Login</h1>
-
         <form method="post" asp-controller="Account" asp-action="Login"
               asp-route-returnUrl="@Model.ReturnUrl">
             <div asp-validation-summary="ModelOnly"></div>
@@ -22,34 +29,48 @@
                 <input asp-for="RememberMe" />
             </div>
             <div>
-                <input type="submit" value="Войти" />
+                <input type="submit" value="Enter" />
             </div>
         </form>
-
+        @if(!User.Identity.IsAuthenticated)
+         {
+            <div class="register-user">                   
+                <a asp-controller="Account" asp-action="Register">Регистрация</a>
+            </div>
+         }
     </div>
+
     <div class="col-md-5">
         <h1>External login</h1>
         @{ 
-            if (Model.ExternalLogins.Count == 0)
+            if (Model.ExternalLogins != null)
             {
+                if (Model.ExternalLogins.Count == 0)
+                {
                 <div>No external logins configured</div>
+                }
+                else
+                {
+                    <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                        <div>
+                            @foreach (var provider in Model.ExternalLogins)
+                             {
+                                if (provider.Name == "Google")
+                                {
+                                    <div class="col-md-4">
+                                    <button type="submit" class="btn btn-block btn-google" value="@provider.Name"
+                                            title="Log in using your @provider.DisplayName account" name="provider">
+
+                                        <i class="fab fa-google-plus fa-align-left social-icon" style=""></i>Google
+                                    </button>
+                                </div>
+                                }
+                             }
+                        </div>
+                    </form>
+                    }
+                }
             }
-            else
-            {
-                <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
-                    <div>
-                        @foreach (var provider in Model.ExternalLogins) 
-                        {
-                            <button type="submit" class="btn btn-primary"
-                                    name="provider" value="@provider.Name"
-                                    title="Login usin your @provider.DisplayName account">
-                                @provider.DisplayName
-                            </button>
-                        }
-                    </div>
-                </form>
-            }
-        }
-    
+
     </div>
 </div>

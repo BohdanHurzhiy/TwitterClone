@@ -24,12 +24,14 @@ namespace TwitterClone.ASP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -56,17 +58,19 @@ namespace TwitterClone.ASP.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            LoginViewModel model = new ()
+            LoginViewModel model = new()
             {
                 ReturnUrl = returnUrl,
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
             };
+
             return View(model);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -76,7 +80,6 @@ namespace TwitterClone.ASP.Controllers
                     await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    // проверяем, принадлежит ли URL приложению
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                     {
                         return Redirect(model.ReturnUrl);
@@ -88,13 +91,13 @@ namespace TwitterClone.ASP.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                    ModelState.AddModelError("", "Incorrect username and (or) password");
+                    model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();                    
                 }
             }
             return View(model);
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
@@ -108,8 +111,6 @@ namespace TwitterClone.ASP.Controllers
             {
                 Response.Cookies.Delete(cookie);
             }
-
-
             return RedirectToAction("Index", "Home");
         }
         
@@ -174,7 +175,7 @@ namespace TwitterClone.ASP.Controllers
                     await _userManager.AddLoginAsync(user, info);
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home", new User{ Id = user.Id });
                 }
                 ViewBag.ErroTitle = $"Email claim not received from {info.LoginProvider}";
                 ViewBag.ErrorrMessage = "Please contact support on some@gmail.com";

@@ -5,6 +5,8 @@ namespace TwitterClone.ASP.Services.ServiceInterface
 {
     public interface IUserService
     {
+        User GetUser(string idUser);
+        User GetUser(string idUser, string emailUser);
         void Follow(string idUser, string targetUser);
         void UnFollow(string idUser, string targetUser);
 

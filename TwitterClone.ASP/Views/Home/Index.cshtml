@@ -1,18 +1,51 @@
-﻿@{
+﻿@model ICollection<TwitterClone.ASP.Models.Post>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p>@User.Identity.Name</p>
+    @if (Model != null)
+     {
+        <div class="user-name">@ViewBag.nameUser</div>
 
-    <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type="submit" value="Выход" />
-    </form>
+        <p>@User.Identity.Name</p>
+
+        <div class="enter-post-text">
+            <form method="post" class="form-horizontal" asp-controller="Home" asp-action="AddPost">
+                <input type="hidden" value="@ViewBag.idUser" name="UserId" />
+                <div class="form-group">
+                    <label for="TextPost" class="col-md-2 control-label"></label>
+                    <div class="col-md-4">
+                        <textarea name="TextPost" class="form-text"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" value="Твитнуть" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        @if (Model != null)
+        {
+            @foreach (Post post in Model)
+            {
+                <div class="user-posts"> 
+                    <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
+                    <span class="label-post-user-id">Post User Id </span><p class="post-user-id">@post.UserId</p>
+                    <span> Text Post </span><p class="post-text">@post.TextPost</p>
+                </div>
+            }
+        }
+     }
+    <form method="post" asp-controller="Account" asp-action="Logout" >
+       <input type="submit" class="btn btn-default" value="Logout" />
+    </form>    
 }
 else
 {
-    <a asp-controller="Account" asp-action="Login">Вход</a>
+    <a asp-controller="Account" asp-action="Login">Enter</a>
     <a asp-controller="Account" asp-action="Register">Регистрация</a>
 }

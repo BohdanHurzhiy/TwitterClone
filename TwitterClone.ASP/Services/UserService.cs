@@ -70,7 +70,7 @@ namespace TwitterClone.ASP.Services
 
         }
         
-        public ICollection<Post> GetPostsForUser(string idUser, int numberOfPost)
+        public ICollection<Post> GetPostsForUser(string idUser, int numberOfPost = 10)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -165,5 +165,39 @@ namespace TwitterClone.ASP.Services
                 };
             }         
         }
-    }
+
+        public User GetUser(string idUser)
+        {
+            if (idUser == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var user = _dbTwitterContex.Users
+                .Where(u => u.Id == idUser)
+                .FirstOrDefault();
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return user;
+        }
+        public User GetUser(string idUser, string emailUser)
+        {
+            User user = null;
+            if (idUser != null)
+            {
+                user = GetUser(idUser);
+            }
+
+            user = _dbTwitterContex.Users
+                .Where(u => u.Email == emailUser)
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return user;
+        }
+    }   
 }

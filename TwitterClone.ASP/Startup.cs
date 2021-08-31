@@ -1,7 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using TwitterClone.ASP.Models;
 using TwitterClone.ASP.Services;
 using TwitterClone.ASP.Services.ServiceInterface;
@@ -28,6 +28,8 @@ namespace TwitterClone.ASP
             
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DbTwitterCloneContex>();
+            
+            
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -49,7 +51,7 @@ namespace TwitterClone.ASP
 
                 options.SignIn.RequireConfirmedEmail = false;
 
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 3;
             });
 
@@ -68,14 +70,23 @@ namespace TwitterClone.ASP
             app.UseRouting();
 
             app.UseAuthentication();  
-            app.UseAuthorization();           
+            app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default1",
+                    pattern: "{controller=Home}",
+                    new { action = "Index" }
+                    );
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

@@ -19,14 +19,12 @@ namespace TwitterClone.ASP.Models
 
         public DbTwitterCloneContex(DbContextOptions<DbTwitterCloneContex> options)
             : base(options)
-        {
-            Database.EnsureDeleted();
+        {    
             Database.EnsureCreated();
         }
 
         public DbTwitterCloneContex()
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -43,9 +41,13 @@ namespace TwitterClone.ASP.Models
             modelBuilder.Entity<Post>(PostConfigure);
             modelBuilder.Entity<Liked>(LikedConfigure);
             modelBuilder.Entity<Tag>(TagConfigure);
+            modelBuilder.Entity<User>(UserConfigure);
            // modelBuilder.Entity<TagsPost>(TagsPostConfigure);
         }
-        
+        public void UserConfigure(EntityTypeBuilder<User> builder)
+        {
+        }
+
         public void PostConfigure(EntityTypeBuilder<Post> builder)
         {
             builder.Property(p => p.PublicationDate)
