@@ -20,7 +20,7 @@ namespace TwitterClone.ASP.Controllers
 
         public IActionResult Index() => View(_userManager.Users.ToList());
 
-        public IActionResult Create() => View();
+        public IActionResult Create() => View();  
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)

@@ -37,7 +37,7 @@ namespace TwitterClone.ASP
                         Configuration.GetSection("Authentication:Google");
 
                     options.ClientId = googleAuthNSection["ClientId"];
-                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];                   
                 });
            
             services.Configure<IdentityOptions>(options =>
@@ -80,6 +80,18 @@ namespace TwitterClone.ASP
                     new { action = "Index" }
                     );
             });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default2",
+                    pattern: "{id}",
+                    new {
+                        controller = "User",
+                        action = "Index"
+                    });
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

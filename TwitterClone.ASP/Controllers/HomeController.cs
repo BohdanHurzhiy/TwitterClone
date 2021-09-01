@@ -28,8 +28,7 @@ namespace TwitterClone.ASP.Controllers
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IPostService postService)
-        {
-          
+        {          
             _logger = logger;
             _userService = userService;
             _userManager = userManager;
@@ -40,13 +39,14 @@ namespace TwitterClone.ASP.Controllers
         [HttpGet]
         public IActionResult Index(string idUser)
         {
-            var iduser = (User.Claims.ToArray())[0].Value;
-            var user = _userService.GetUser(iduser);
-            ViewBag.idUser = iduser;
+            var idUserClaims = (HttpContext.User.Claims.ToArray())[0].Value;           
+            var user = _userService.GetUser(idUserClaims);
+            
+            ViewBag.idUser = idUserClaims;
             ViewBag.nameUser = user.Name;
 
             var numPost = 10;
-            var posts = _userService.GetPostsForUser(iduser, numPost);
+            var posts = _userService.GetPostsForUser(idUserClaims, numPost);
             return View(posts);
         }
 

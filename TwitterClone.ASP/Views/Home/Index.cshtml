@@ -5,7 +5,7 @@
 
 
 @if (User.Identity.IsAuthenticated)
-{
+ {
     @if (Model != null)
      {
         <div class="user-name">@ViewBag.nameUser</div>
@@ -28,24 +28,34 @@
                 </div>
             </form>
         </div>
-        @if (Model != null)
-        {
-            @foreach (Post post in Model)
-            {
-                <div class="user-posts"> 
-                    <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
-                    <span class="label-post-user-id">Post User Id </span><p class="post-user-id">@post.UserId</p>
-                    <span> Text Post </span><p class="post-text">@post.TextPost</p>
-                </div>
-            }
-        }
+        <div class="posts">
+            <span>Posts for user:</span>
+            <span>
+                @if (ViewBag.nameuser == null)
+                 {
+                    @User.Identity.Name
+                 }
+                 else
+                 {
+                    @ViewBag.nameUser
+                 }
+            </span>
+        </div>
+        @foreach (Post post in Model)
+         {
+         <div class="user-posts"> 
+            <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
+            <span class="label-post-user-id">Post User Id </span><p class="post-user-id">@post.UserId</p>
+            <span> Text Post </span><p class="post-text">@post.TextPost</p>
+         </div>
+         }
      }
     <form method="post" asp-controller="Account" asp-action="Logout" >
        <input type="submit" class="btn btn-default" value="Logout" />
     </form>    
-}
-else
-{
+ }
+ else
+ {
     <a asp-controller="Account" asp-action="Login">Enter</a>
     <a asp-controller="Account" asp-action="Register">Регистрация</a>
-}
+ }

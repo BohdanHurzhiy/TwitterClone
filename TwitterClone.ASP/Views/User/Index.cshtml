@@ -1,0 +1,21 @@
+﻿@model TwitterClone.ASP.Models.User
+
+<div class="user-div">
+    <span> Name User </span>
+    <p> @Model.Name </p>
+    <span> Email User </span>
+    <p> @Model.Email </p>
+    @if (ViewBag.My)
+    {
+        <span> Edit Profile </span>
+        <p>  </p>
+    }
+    else
+    {
+        <span>   
+            Subscribe
+        </span>
+        <p>  </p>
+    }
+
+</div>  
