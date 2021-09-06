@@ -80,18 +80,23 @@ namespace TwitterClone.ASP.Services
                 throw new ArgumentException();
             }
 
-            var followings = _dbTwitterContex.Relationships 
+            var followings = _dbTwitterContex.Relationships
                 .Where(r => r.FollowerId == user.Id)
-                .Select(f => f.FollowedId);
+                .Select(f => f.FollowedId)
+                .ToList();
+
+            followings.Add(idUser);
 
             var posts = followings
                 .SelectMany(u => _dbTwitterContex.Posts
                 .Where(p => p.UserId == u))
+                .Distinct()
                 .ToList();
-            
-            posts = posts.OrderBy(p => p.PublicationDate)
+
+            posts = posts.OrderByDescending(p => p.PublicationDate)
                 .Take(numberOfPost)
                 .ToList();
+
             return posts;
         }
         
@@ -198,6 +203,44 @@ namespace TwitterClone.ASP.Services
                 throw new NullReferenceException();
             }
             return user;
+        }
+
+        public bool SubscriptionCheck(string idUser, string targetUser)
+        {
+            var relationship = _dbTwitterContex.Relationships
+                .Where(rel => rel.FollowerId == idUser)
+                .Where(rel => rel.FollowedId == targetUser)
+                .FirstOrDefault();
+
+            return relationship != null;
+        }
+
+        public ICollection<Post> GetUserPosts(string idUser, int numberOfPost)
+        {
+            var user = _dbTwitterContex.Users
+                 .Where(u => u.Id == idUser)
+                 .FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+            var posts = _dbTwitterContex.Posts
+                .Where(p => p.UserId == idUser)
+                .ToList();
+            return posts;
+        }
+
+        public bool CheckUserByEmail(string emailUser)
+        {
+            if (emailUser == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var user = _dbTwitterContex.Users
+                .Where(u => u.Email == emailUser)
+                .FirstOrDefault();
+
+            return user != null;
         }
     }   
 }

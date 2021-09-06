@@ -1,7 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
+﻿a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
@@ -63,7 +60,8 @@ body {
   margin-bottom: 60px;
 }
 .footer {
-  position: absolute;
+  position: relative;
+  display: block;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
@@ -76,4 +74,30 @@ body {
 div.user-posts {
     border: 1px solid black;
     padding: 4px 10px 4px 10px;
+}
+header#header {
+    position: relative;
+    left: auto;
+    float: left;
+    display: block;
+    width: 25%;
+}
+main.pb-3 {
+    position: relative;
+    float: left;
+    margin-left: 20px;
+    width: 50%;
+}
+a.nav-link {
+    text-decoration: none;
+    outline: none;
+    display: block;
+    padding: 6px 0;
+    letter-spacing: 1px;
+    font-weight: 300;
+    color: #444;
+    transition: .3s linear;
+}
+a.current {
+    color: #6fb0b7;
 }

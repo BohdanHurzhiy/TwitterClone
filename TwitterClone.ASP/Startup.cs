@@ -75,6 +75,13 @@ namespace TwitterClone.ASP
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
                     name: "default1",
                     pattern: "{controller=Home}",
                     new { action = "Index" }
@@ -90,13 +97,6 @@ namespace TwitterClone.ASP
                         controller = "User",
                         action = "Index"
                     });
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
         }

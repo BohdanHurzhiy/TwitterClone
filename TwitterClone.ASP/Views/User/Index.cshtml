@@ -1,21 +1,38 @@
-﻿@model TwitterClone.ASP.Models.User
+﻿@model ICollection<TwitterClone.ASP.Models.Post>
+
+@section scripts{
+    <script src="~/js/User.js"></script>
+}
 
 <div class="user-div">
-    <span> Name User </span>
-    <p> @Model.Name </p>
-    <span> Email User </span>
-    <p> @Model.Email </p>
+    <span id="nameUser"> Name User </span>
+    <p> @ViewBag.UserName </p>
+
     @if (ViewBag.My)
     {
-        <span> Edit Profile </span>
-        <p>  </p>
+        <a class="nav-link" asp-controller="User" asp-action="Edit" asp-route-id="@ViewBag.Id">Edit Profile</a>        
     }
     else
     {
-        <span>   
-            Subscribe
-        </span>
-        <p>  </p>
+        <div class="form_container">
+            <form id="form" method="post">
+                <input type="hidden" name="folowerId" value="@ViewBag.UserId">
+                <input type="hidden" name="folowedId" value="@ViewBag.Id">
+                <input type="button" name="subscribe" value="@ViewBag.Subscribe" id="btn-subscribe">
+            </form>
+        </div>
     }
 
-</div>  
+    @if (Model != null)
+    {
+        @foreach (Post post in Model)
+        {
+            <div class="user-posts">
+                <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
+                <span class="label-post-user-id">Post User Id </span><p class="post-user-id">@post.UserId</p>
+                <span> Text Post </span><p class="post-text">@post.TextPost</p>
+            </div>
+        }
+    }
+</div>
+

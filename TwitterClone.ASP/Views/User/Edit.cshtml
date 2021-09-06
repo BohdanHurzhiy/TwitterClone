@@ -1,0 +1,37 @@
+﻿@model TwitterClone.ASP.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Edit Profile";
+}
+<form asp-action="Edit" asp-controller="User">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Email</label>
+        <input type="text" asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Alias" class="control-label">Alias</label>
+        <input type="text" asp-for="Alias" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="SecondName" class="control-label">SecondName</label>
+        <input type="text" asp-for="SecondName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Photo" class="control-label">Photo</label>
+        <input type="file" asp-for="Photo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberPhone" class="control-label">NumberPhone</label>
+        <input type="text" asp-for="NumberPhone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-outline-secondary" />
+    </div>
+</form>

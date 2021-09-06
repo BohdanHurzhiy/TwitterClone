@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using WebMatrix.WebData;
 using Microsoft.AspNetCore.Authentication;
+using TwitterClone.ASP.Services.ServiceInterface;
 
 namespace TwitterClone.ASP.Controllers
 {
@@ -16,11 +17,16 @@ namespace TwitterClone.ASP.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IUserService _userService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -37,11 +43,14 @@ namespace TwitterClone.ASP.Controllers
             if (ModelState.IsValid)
             {
                 User user = new() { Email = model.Email, UserName = model.Email };
+                var index = user.Id.LastIndexOf('-');
+                string alias = user.Id.Substring(index + 1);
+                user.Alias = alias;
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {
-                    // установка куки
+                {                    
+                    // установка куки 
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }

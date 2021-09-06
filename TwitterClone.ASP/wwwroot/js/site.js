@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready( function () {
+    let location = window.location.href;
+    let cur_url = '/' + location.split('/').pop();
 
-// Write your JavaScript code.
+    $('.menu').each(function () {
+        let link = $(this).find('a').toArray();
+        link.forEach(function (element)
+        {
+            let hrefElement = '/' + element.href.split('/').pop();
+            if (hrefElement == cur_url)
+            {
+                element.className = "current "+ element.className;
+                console.log(hrefElement);
+            }
+        })       
+    });
+});

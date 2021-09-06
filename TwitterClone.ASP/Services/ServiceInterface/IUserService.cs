@@ -7,10 +7,14 @@ namespace TwitterClone.ASP.Services.ServiceInterface
     {
         User GetUser(string idUser);
         User GetUser(string idUser, string emailUser);
+        bool CheckUserByEmail(string emailUser);
         void Follow(string idUser, string targetUser);
         void UnFollow(string idUser, string targetUser);
+        bool SubscriptionCheck(string idUser, string targetUser);
 
         ICollection<Post> GetPostsForUser(string idUser, int numberOfPost);
+
+        ICollection<Post> GetUserPosts(string idUser, int numberOfPost);
 
         ICollection<User> GetFollowers(string idUser);
 

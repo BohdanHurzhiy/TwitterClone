@@ -1,0 +1,18 @@
+﻿<header id="header">
+    <div class="container header">
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <nav class="navbar-nav flex-grow-1">
+                <div class="menu">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Index">TwitterClone</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Overview">Overview</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Notifications">Notifications</a>
+                        <a class="nav-link" href="~/@((User.Claims.ToList())[0].Value)">Profile</a>
+                    }
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
