@@ -45,7 +45,10 @@
          {
          <div class="user-posts"> 
             <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
-            <span class="label-post-user-id">Post User Id </span><p class="post-user-id">@post.UserId</p>
+            <span class="label-post-user-id">Post User Id </span>
+             <p class="post-user-id">
+                 <a href="~/@post.UserId">User</a>               
+             </p>
             <span> Text Post </span><p class="post-text">@post.TextPost</p>
          </div>
          }

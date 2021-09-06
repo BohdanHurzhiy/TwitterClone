@@ -90,7 +90,14 @@ namespace TwitterClone.ASP.Controllers
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email };
+            EditUserViewModel model = new () {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                SecondName = user.SecondName,
+                Alias = user.Alias,
+                NumberPhone = user.NumberPhone
+            };
             return View(model);
         }
 
@@ -102,8 +109,12 @@ namespace TwitterClone.ASP.Controllers
                 User user = await _userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
-                    user.Email = model.Email;
-                    user.UserName = model.Email;
+                    user.Email = model.Email ?? user.Email;
+                    user.UserName = model.Email ?? user.Email;
+                    user.Name = model.Name ?? user.Name;                    
+                    user.SecondName = model.SecondName ?? user.SecondName;
+                    user.Alias = model.Alias ?? user.Alias;                    
+                    user.NumberPhone = model.NumberPhone ?? user.NumberPhone;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
