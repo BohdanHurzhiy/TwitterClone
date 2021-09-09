@@ -1,4 +1,6 @@
-﻿$(document).ready( function () {
+﻿$(document).ready(function () { GetPostForUser() });
+
+function GetPostForUser() {
 	let idUser = $("#IdUser").val();
 	let numPosts = 10;
 	$.ajax({
@@ -10,4 +12,4 @@
 			$('#posts-body').html(data);
 		}
 	});
-});
+}

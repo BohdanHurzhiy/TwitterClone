@@ -45,5 +45,14 @@ namespace TwitterClone.ASP.Controllers
             var posts = _userService.GetUserPosts(id, numberPosts);
             return PartialView("GetPostsPartial", posts);
         }
+
+        public void AddPost(Post post)
+        {
+            if (post.TextPost == null)
+            {
+                return;
+            }
+            _postService.AddPost(post.UserId, post.TextPost);            
+        }
     }
 }

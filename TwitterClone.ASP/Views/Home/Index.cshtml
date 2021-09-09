@@ -4,6 +4,7 @@
 }
 @section scripts{
     <script src="~/js/GetPostForUserAsync.js"></script>
+    <script src="~/js/AddPost.js"></script>
 }
 
 @if (User.Identity.IsAuthenticated)
@@ -15,17 +16,17 @@
         <p>@User.Identity.Name</p>
 
         <div class="enter-post-text">
-            <form method="post" class="form-horizontal" asp-controller="Home" asp-action="AddPost">
-                <input type="hidden" value="@ViewBag.IdUser" name="IdUser" id="IdUser" />
+            <form method="post" class="form-horizontal" asp-controller="Home" asp-action="AddPost" id="addPost">
+                <input type="hidden" name="UserId" value="@ViewBag.IdUser" id="IdUser" />
                 <div class="form-group">
                     <label for="TextPost" class="col-md-2 control-label"></label>
                     <div class="col-md-4">
-                        <textarea name="TextPost" class="form-text"></textarea>
+                        <textarea name="TextPost" class="form-text" id="textPost"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" class="btn btn-default" value="Твитнуть" />
+                        <input type="button" class="btn btn-default" value="Твитнуть" id="btn-addPost"/>
                     </div>
                 </div>
             </form>

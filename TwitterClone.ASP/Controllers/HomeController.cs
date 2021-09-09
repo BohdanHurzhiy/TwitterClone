@@ -56,15 +56,15 @@ namespace TwitterClone.ASP.Controllers
             return View(user);
         }
 
-        [HttpPost]
-        public IActionResult AddPost(Post post)
-        {
-            if (ModelState.IsValid)
-            {
-                var idPost = _postService.AddPost(post.UserId, post.TextPost);                
-            }
-            return Redirect("Index");
-        }
+        //[HttpPost]
+        //public IActionResult AddPost(Post post)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var idPost = _postService.AddPost(post.UserId, post.TextPost);                
+        //    }
+        //    return Redirect("Index");
+        //}
 
         public IActionResult Privacy()
         {
