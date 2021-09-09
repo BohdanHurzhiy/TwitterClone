@@ -1,20 +1,22 @@
-﻿@model ICollection<TwitterClone.ASP.Models.Post>
+﻿@model TwitterClone.ASP.Models.User
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@section scripts{
+    <script src="~/js/GetPostForUserAsync.js"></script>
+}
 
 @if (User.Identity.IsAuthenticated)
- {
+{
     @if (Model != null)
-     {
+    {
         <div class="user-name">@ViewBag.nameUser</div>
 
         <p>@User.Identity.Name</p>
 
         <div class="enter-post-text">
             <form method="post" class="form-horizontal" asp-controller="Home" asp-action="AddPost">
-                <input type="hidden" value="@ViewBag.idUser" name="UserId" />
+                <input type="hidden" value="@ViewBag.IdUser" name="IdUser" id="IdUser" />
                 <div class="form-group">
                     <label for="TextPost" class="col-md-2 control-label"></label>
                     <div class="col-md-4">
@@ -32,33 +34,24 @@
             <span>Posts for user:</span>
             <span>
                 @if (ViewBag.nameuser == null)
-                 {
+                {
                     @User.Identity.Name
-                 }
-                 else
-                 {
+                }
+                else
+                {
                     @ViewBag.nameUser
-                 }
+                }
             </span>
+            <div id="posts-body"></div>
         </div>
-        @foreach (Post post in Model)
-         {
-         <div class="user-posts"> 
-            <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
-            <span class="label-post-user-id">Post User Id </span>
-             <p class="post-user-id">
-                 <a href="~/@post.UserId">User</a>               
-             </p>
-            <span> Text Post </span><p class="post-text">@post.TextPost</p>
-         </div>
-         }
-     }
-    <form method="post" asp-controller="Account" asp-action="Logout" >
-       <input type="submit" class="btn btn-default" value="Logout" />
-    </form>    
- }
- else
- {
+
+    }
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" class="btn btn-default" value="Logout" />
+    </form>
+}
+else
+{
     <a asp-controller="Account" asp-action="Login">Enter</a>
     <a asp-controller="Account" asp-action="Register">Регистрация</a>
- }
+}

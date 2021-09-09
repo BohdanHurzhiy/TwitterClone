@@ -1,0 +1,17 @@
+﻿@model TwitterClone.ASP.Models.Post
+
+@{
+    string postId = "Post " + Model.Id;
+    ViewData["Title"] = postId;
+}
+
+<div class="post">
+    <div class="">
+        <label asp-for="UserId" class="control-label">User Id</label>
+        <p> @Model.UserId</p>
+    </div>
+    <div class="">
+        <label asp-for="TextPost" class="control-label">Text Post</label>
+        <p>@Model.TextPost</p>
+    </div>
+</div>

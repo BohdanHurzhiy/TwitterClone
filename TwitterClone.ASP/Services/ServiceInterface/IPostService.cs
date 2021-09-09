@@ -4,7 +4,7 @@ namespace TwitterClone.ASP.Services.ServiceInterface
 {
     public interface IPostService
     {
-        void AddPost(string idUser, string text);
+        int AddPost(string idUser, string text);
 
         void RemovePost(int idPost);
 
@@ -19,5 +19,12 @@ namespace TwitterClone.ASP.Services.ServiceInterface
         void AddRepostToPost(string idUser, string text, int idPost);
 
         void AddAnswerToPost(string idUser, string text, int idPost);
+
+        Post GetPostToId(int id);
+
+        public string SearchTagsInPost(int idPost, string text);
+
+        public int GetTagId(string tagText);
+
     }
 }

@@ -58,12 +58,11 @@ namespace TwitterClone.ASP.Controllers
                 {
                     ViewBag.Subscribe = "Subscribe";                   
                 }
-                ViewBag.UserId = userId;
+                ViewBag.IdUser = userId;
                 ViewBag.My = false;               
             }
             var numberPosts = 10;
-            var posts = _userService.GetUserPosts(user.Id, numberPosts);
-            return View(posts);
+            return View(user);
         }
 
         [HttpPost]

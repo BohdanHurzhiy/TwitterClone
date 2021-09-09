@@ -1,0 +1,28 @@
+﻿@model ICollection<TwitterClone.ASP.Models.Post>
+<div class="partial-post-user">
+    @foreach (Post post in Model)
+    {
+    <div class="user-posts">
+        <span class="label-post-id">Id Post</span>
+        <p class="post-id">
+            <a href="~/Post/@post.Id">Post Id</a>
+        </p>
+        <span class="label-post-user-id">Post User Id </span>
+        <p class="post-user-id">
+            <a href="~/@post.UserId">User</a>
+        </p>
+        @if (post.Tags.Count != 0)
+         {
+            <div class="tags-post">
+             @foreach (Tag tag in post.Tags)
+              { 
+                <div class="tag-post">                    
+                    @tag.TagsText
+                </div>
+              }
+            </div>
+         }
+        <span> Text Post </span><p class="post-text">@post.TextPost</p>
+    </div>
+    }
+</div>

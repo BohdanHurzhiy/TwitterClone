@@ -98,6 +98,23 @@ namespace TwitterClone.ASP
                         action = "Index"
                     });
             });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "post",
+            //        pattern: "{controller=Post}/{id}",
+            //        new
+            //        {                      
+            //            action = "Index"
+            //        });
+            //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "postsUser",
+                    pattern: "{controller=Post}/{action=GetPostForUserAsync}");
+            });
+
 
         }
     }

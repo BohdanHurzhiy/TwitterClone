@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterClone.ASP.Models;
 
 namespace TwitterClone.ASP.Services.ServiceInterface
@@ -13,6 +14,7 @@ namespace TwitterClone.ASP.Services.ServiceInterface
         bool SubscriptionCheck(string idUser, string targetUser);
 
         ICollection<Post> GetPostsForUser(string idUser, int numberOfPost);
+        Task<ICollection<Post>> GetPostsForUserAsync(string idUser, int numberOfPost = 10);
 
         ICollection<Post> GetUserPosts(string idUser, int numberOfPost);
 

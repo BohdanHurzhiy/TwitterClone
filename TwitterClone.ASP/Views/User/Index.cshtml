@@ -1,7 +1,8 @@
-﻿@model ICollection<TwitterClone.ASP.Models.Post>
+﻿@model TwitterClone.ASP.Models.User
 
 @section scripts{
     <script src="~/js/User.js"></script>
+    <script src="~/js/GetUserPostsAsync.js"></script>
 }
 
 <div class="user-div">
@@ -10,32 +11,21 @@
 
     @if (ViewBag.My)
     {
-        <a class="nav-link" asp-controller="User" asp-action="Edit" asp-route-id="@ViewBag.Id">Edit Profile</a>        
+        <a class="nav-link" asp-controller="User" asp-action="Edit" asp-route-id="@ViewBag.Id">Edit Profile</a>
     }
     else
     {
         <div class="form_container">
             <form id="form" method="post">
-                <input type="hidden" name="folowerId" value="@ViewBag.UserId">
+                <input type="hidden" name="folowerId" value="@ViewBag.IdUser">
                 <input type="hidden" name="folowedId" value="@ViewBag.Id">
                 <input type="button" name="subscribe" value="@ViewBag.Subscribe" id="btn-subscribe">
             </form>
         </div>
     }
-
-    @if (Model != null)
-    {
-        @foreach (Post post in Model)
-        {
-            <div class="user-posts">
-                <span class="label-post-id">Id Post</span><p class="post-id">@post.Id</p>
-                <span class="label-post-user-id">Post User Id </span>
-                <p>
-                    <a href="~/@post.UserId">User</a>
-                </p>
-                <span> Text Post </span><p class="post-text">@post.TextPost</p>
-            </div>
-        }
-    }
+    <input type="hidden" value="@ViewBag.Id" id="Id">
+    <div class="posts" id="posts">
+        <div id="posts-body"></div>
+    </div>
 </div>
 

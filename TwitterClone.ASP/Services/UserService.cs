@@ -4,6 +4,8 @@ using TwitterClone.ASP.Models;
 using System.IO;
 using System.Collections.Generic;
 using TwitterClone.ASP.Services.ServiceInterface;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace TwitterClone.ASP.Services
 {
@@ -79,7 +81,6 @@ namespace TwitterClone.ASP.Services
             {
                 throw new ArgumentException();
             }
-
             var followings = _dbTwitterContex.Relationships
                 .Where(r => r.FollowerId == user.Id)
                 .Select(f => f.FollowedId)
@@ -89,11 +90,12 @@ namespace TwitterClone.ASP.Services
 
             var posts = followings
                 .SelectMany(u => _dbTwitterContex.Posts
-                .Where(p => p.UserId == u))
-                .Distinct()
+                .Include(p => p.Tags)
+                .Where(p => p.UserId == u))                
+                .Distinct()                
                 .ToList();
 
-            posts = posts.OrderByDescending(p => p.PublicationDate)
+            posts = posts.OrderByDescending(p => p.PublicationDate)                
                 .Take(numberOfPost)
                 .ToList();
 
@@ -241,6 +243,11 @@ namespace TwitterClone.ASP.Services
                 .FirstOrDefault();
 
             return user != null;
+        }
+        public async Task<ICollection<Post>> GetPostsForUserAsync(string idUser, int numberOfPost = 10)
+        {
+            var posts = await Task.Run(()=> GetPostsForUser(idUser, numberOfPost));
+            return posts;
         }
     }   
 }

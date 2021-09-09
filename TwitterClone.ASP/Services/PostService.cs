@@ -14,7 +14,7 @@ namespace TwitterClone.ASP.Services
             _dbTwitterContex = dbTwitterContex;
         }
         
-        public void AddPost(string idUser, string text)
+        public int AddPost(string idUser, string text)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -28,9 +28,21 @@ namespace TwitterClone.ASP.Services
                 throw new ArgumentException();
             }
 
-            Post post = new Post() { UserId = idUser, TextPost = text };
+            Post post = new Post() { UserId = idUser };
             _dbTwitterContex.Posts.Add(post);
             _dbTwitterContex.SaveChanges();
+
+            if (!text.Contains('#'))
+            {
+                post.TextPost = text;
+            }
+            else
+            {
+                var textWithOutTags = SearchTagsInPost(post.Id, text);
+                post.TextPost = textWithOutTags;
+            }
+            _dbTwitterContex.SaveChanges();
+            return post.Id;
         }
         
         public void RemovePost(int idPost)
@@ -94,6 +106,15 @@ namespace TwitterClone.ASP.Services
                 _dbTwitterContex.Tags.Add(tag);
                 _dbTwitterContex.SaveChanges();
             }
+        }
+
+        public int GetTagId(string tagText)
+        {
+            var tagId = _dbTwitterContex.Tags
+                .Where(tag => tag.TagsText == tagText)
+                .Select(t => t.Id)
+                .FirstOrDefault();
+            return tagId;
         }
        
         public void AddTagForPost(int idPost, int tagId) 
@@ -180,6 +201,50 @@ namespace TwitterClone.ASP.Services
             Answer answer = new() { UserId = idUser, TextAnswer = text, PostId = idPost };
             _dbTwitterContex.Answers.Add(answer);
             _dbTwitterContex.SaveChanges();
+        }
+
+        public Post GetPostToId(int id)
+        {
+            var post = _dbTwitterContex.Posts
+                 .Where(p => p.Id == id)
+                 .FirstOrDefault();
+            if (post == null)
+            {
+                throw new NullReferenceException();
+            }
+            return post;
+        }
+
+        public string SearchTagsInPost(int idPost, string text)
+        {
+            string textPostWithOutTags = text;
+
+            var strWithTag = text.Split('#');
+            if (strWithTag.Length == 0)
+            {
+                return " ";
+            }
+
+            foreach (var tagStr in strWithTag)
+            {
+                if (tagStr != "")
+                {
+                    var tagToBase = tagStr;
+                    var iSpace = tagStr.IndexOf(' ');
+                    if (iSpace != -1)
+                    {
+                        string tagStrSubStr = tagStr.Substring(0, iSpace + 1);
+                        textPostWithOutTags = tagStr.Substring(iSpace + 1);
+                        tagToBase = tagStrSubStr;
+                    }
+
+                    Tag tag = new() { TagsText = tagToBase };
+                    AddTagToBase(tag);
+                    int tagId = GetTagId(tagToBase);
+                    AddTagForPost(idPost, tagId);
+                }
+            }
+            return textPostWithOutTags;
         }
     }
 }

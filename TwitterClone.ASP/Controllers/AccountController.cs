@@ -46,6 +46,7 @@ namespace TwitterClone.ASP.Controllers
                 var index = user.Id.LastIndexOf('-');
                 string alias = user.Id.Substring(index + 1);
                 user.Alias = alias;
+
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -143,6 +144,7 @@ namespace TwitterClone.ASP.Controllers
                 ReturnUrl = returnUrl,
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
             };
+
             if (rempreError != null)
             {
                 ModelState.AddModelError(string.Empty, $"Error from external provider: {rempreError}");
@@ -150,12 +152,14 @@ namespace TwitterClone.ASP.Controllers
                 return View("Login", loginViewModel);
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
+
             if (info == null)
             {
                 ModelState.AddModelError(string.Empty, "Error loading external login information.");
 
                 return View("Login", loginViewModel);
             }
+
             var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
                 info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
