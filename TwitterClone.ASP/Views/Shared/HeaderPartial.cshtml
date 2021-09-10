@@ -5,11 +5,12 @@
                 <div class="menu">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        
                         <a class="navbar-brand" asp-controller="Home" asp-action="Index">TwitterClone</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Overview">Overview</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Notifications">Notifications</a>
-                        <a class="nav-link" href="~/@((User.Claims.ToList())[0].Value)">Profile</a>
+                        <a class="nav-link" asp-controller="User" asp-action="Index">Profile</a>
                     }
                 </div>
             </nav>

@@ -21,5 +21,10 @@ namespace TwitterClone.ASP.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Password Confirm")]
         public string PasswordConfirm { get; set; }
+
+        [Required(ErrorMessage = "The Alias must not be empty")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Alias length is Invalid")]        
+        [Display(Name = "Alias")]
+        public string Alias { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace TwitterClone.ASP.Services.ServiceInterface
     {
         User GetUser(string idUser);
         User GetUser(string idUser, string emailUser);
+        User GetUserByAlias(string alias);
+        User GetUserByEmail(string email);
         bool CheckUserByEmail(string emailUser);
         void Follow(string idUser, string targetUser);
         void UnFollow(string idUser, string targetUser);
@@ -17,6 +19,7 @@ namespace TwitterClone.ASP.Services.ServiceInterface
         Task<ICollection<Post>> GetPostsForUserAsync(string idUser, int numberOfPost = 10);
 
         ICollection<Post> GetUserPosts(string idUser, int numberOfPost);
+
 
         ICollection<User> GetFollowers(string idUser);
 

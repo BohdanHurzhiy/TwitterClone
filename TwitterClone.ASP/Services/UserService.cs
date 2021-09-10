@@ -188,6 +188,7 @@ namespace TwitterClone.ASP.Services
             }
             return user;
         }
+       
         public User GetUser(string idUser, string emailUser)
         {
             User user = null;
@@ -205,6 +206,39 @@ namespace TwitterClone.ASP.Services
                 throw new NullReferenceException();
             }
             return user;
+        }
+        
+        public User GetUserByAlias(string alias)
+        {
+            if (alias == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var user = _dbTwitterContex.Users
+                .Where(u => u.Alias == alias)
+                .FirstOrDefault();
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return user;
+        }
+        
+        public User GetUserByEmail(string email)
+        {
+
+            if (email == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var user = _dbTwitterContex.Users
+                .Where(u => u.Email == email)
+                .FirstOrDefault();
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return user;   
         }
 
         public bool SubscriptionCheck(string idUser, string targetUser)

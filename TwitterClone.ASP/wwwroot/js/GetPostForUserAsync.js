@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () { GetPostForUser() });
+$("#btn-addPost").click(function () { GetPostForUser() });
 
 function GetPostForUser() {
 	let idUser = $("#IdUser").val();

@@ -35,22 +35,22 @@ namespace TwitterClone.ASP.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string id = null)
+        public IActionResult Index(string alias = null)
         {
             var userId = (HttpContext.User.Claims.ToArray())[0].Value;
 
-            var user = id == null ? _userService.GetUser(userId) : _userService.GetUser(id);
+            var user = alias == null ? _userService.GetUser(userId) : _userService.GetUserByAlias(alias);
 
             ViewBag.UserName = user.Name;
             ViewBag.Id = user.Id;
 
-            if (id == null || userId == id)
+            if (alias == null || userId == user.Id)
             {
                 ViewBag.My = true;                
             }
             else
             {
-                if (_userService.SubscriptionCheck(userId, id))
+                if (_userService.SubscriptionCheck(userId, user.Id))
                 {
                     ViewBag.Subscribe = "Unsubscribe";
                 }
@@ -82,9 +82,10 @@ namespace TwitterClone.ASP.Controllers
             return Json(result); 
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string alias)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            User userInBase = _userService.GetUserByAlias(alias);
+            User user = await _userManager.FindByIdAsync(userInBase.Id);
             if (user == null)
             {
                 return NotFound();
@@ -109,13 +110,14 @@ namespace TwitterClone.ASP.Controllers
                 if (user != null)
                 {
                     user.Email = model.Email ?? user.Email;
-                    user.UserName = model.Email ?? user.Email;
+                    user.UserName = model.Alias ?? user.Alias;
                     user.Name = model.Name ?? user.Name;                    
                     user.SecondName = model.SecondName ?? user.SecondName;
                     user.Alias = model.Alias ?? user.Alias;                    
-                    user.NumberPhone = model.NumberPhone ?? user.NumberPhone;
+                    user.NumberPhone = model.NumberPhone ?? user.NumberPhone;                   
 
-                    var result = await _userManager.UpdateAsync(user);
+                    var result = await _userManager.UpdateAsync(user);                    
+
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");

@@ -76,7 +76,7 @@ namespace TwitterClone.ASP
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{alias?}");
             });
 
             app.UseEndpoints(endpoints =>
@@ -92,7 +92,7 @@ namespace TwitterClone.ASP
             {
                 endpoints.MapControllerRoute(
                     name: "default2",
-                    pattern: "{id}",
+                    pattern: "{alias}",
                     new {
                         controller = "User",
                         action = "Index"

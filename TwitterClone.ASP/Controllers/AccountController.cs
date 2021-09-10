@@ -42,16 +42,20 @@ namespace TwitterClone.ASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new() { Email = model.Email, UserName = model.Email };
-                var index = user.Id.LastIndexOf('-');
-                string alias = user.Id.Substring(index + 1);
-                user.Alias = alias;
+                User user = new() { Email = model.Email };
 
-                // добавляем пользователя
+                string alias = model.Alias;
+                if (alias == null)
+                {
+                    alias = GetAlias(user.Id);                   
+                }                
+                user.Alias = alias;
+                user.Name = alias;
+                user.UserName = alias;
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {                    
-                    // установка куки 
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -64,6 +68,12 @@ namespace TwitterClone.ASP.Controllers
                 }
             }
             return View(model);
+        }
+        private static string GetAlias(string userId)
+        {
+            var index = userId.LastIndexOf('-');
+            string alias = userId.Substring(index + 1);
+            return alias;
         }
 
         [HttpGet]
@@ -86,8 +96,15 @@ namespace TwitterClone.ASP.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = _userService.GetUserByEmail(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Incorrect username and (or) password");
+                    model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    return View(model);
+                }
                 var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -177,10 +194,12 @@ namespace TwitterClone.ASP.Controllers
                     if (user == null)
                     {
                         user = new User
-                        {
-                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        {                           
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)                            
                         };
+                        user.Alias = GetAlias(user.Id);
+                        user.UserName = GetAlias(user.Id);
+                        user.Name = GetAlias(user.Id);
 
                         await _userManager.CreateAsync(user);
                     }
@@ -188,8 +207,9 @@ namespace TwitterClone.ASP.Controllers
                     await _userManager.AddLoginAsync(user, info);
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return RedirectToAction("Index", "Home", new User{ Id = user.Id });
+                    return RedirectToAction("Index", "Home");
                 }
+
                 ViewBag.ErroTitle = $"Email claim not received from {info.LoginProvider}";
                 ViewBag.ErrorrMessage = "Please contact support on some@gmail.com";
 

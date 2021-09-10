@@ -37,7 +37,7 @@ namespace TwitterClone.ASP.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string idUser)
+        public IActionResult Index()
         {
             var idUserClaims = (HttpContext.User.Claims.ToArray())[0].Value;           
             var user = _userService.GetUser(idUserClaims);
@@ -46,8 +46,8 @@ namespace TwitterClone.ASP.Controllers
             ViewBag.nameUser = user.Name;
 
             var numPost = 10;
-           // var posts = _userService.GetPostsForUser(idUserClaims, numPost);
-            return View(user);
+            // var posts = _userService.GetPostsForUser(idUserClaims, numPost);
+            return View("Home", user);
         }
 
         [HttpPost]
@@ -55,16 +55,6 @@ namespace TwitterClone.ASP.Controllers
         {
             return View(user);
         }
-
-        //[HttpPost]
-        //public IActionResult AddPost(Post post)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var idPost = _postService.AddPost(post.UserId, post.TextPost);                
-        //    }
-        //    return Redirect("Index");
-        //}
 
         public IActionResult Privacy()
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using TwitterClone.ASP.Models;
 using TwitterClone.ASP.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using TwitterClone.ASP.Services.ServiceInterface;
 
 namespace TwitterClone.ASP.Controllers
 {
@@ -12,10 +13,12 @@ namespace TwitterClone.ASP.Controllers
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
+        private readonly IUserService _userService;
 
-        public UsersController(UserManager<User> userManager)
+        public UsersController(UserManager<User> userManager, IUserService userService)
         {
             _userManager = userManager;
+            _userService = userService;
         }
 
         public IActionResult Index() => View(_userManager.Users.ToList());
@@ -44,9 +47,10 @@ namespace TwitterClone.ASP.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string alias)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            User userInBase = _userService.GetUserByAlias(alias);
+            User user = await _userManager.FindByIdAsync(userInBase.Id);
             if (user == null)
             {
                 return NotFound();
