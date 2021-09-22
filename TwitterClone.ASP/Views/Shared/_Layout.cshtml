@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    @await Html.PartialAsync("HeaderPartial")    
-   
+    @await Html.PartialAsync("HeaderPartial")
+
     <main role="main" class="pb-3">
         <div class="container">
             @RenderBody()
         </div>
-    </main>   
+    </main>
 
     <footer class="border-top footer text-muted">
+        @await Html.PartialAsync("SearchByTagPartial")
         <div class="container">
             &copy; 2021 - TwitterClone.ASP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -24,6 +25,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/searchByTag.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

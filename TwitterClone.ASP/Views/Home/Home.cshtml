@@ -11,9 +11,7 @@
 {
     @if (Model != null)
     {
-        <div class="user-name">@ViewBag.nameUser</div>
-
-        <p>@User.Identity.Name</p>
+        <p>@Model.Alias</p>
 
         <div class="enter-post-text">
             <form method="post" class="form-horizontal" asp-controller="Home" asp-action="AddPost" id="addPost">

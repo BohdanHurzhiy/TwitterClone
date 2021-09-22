@@ -56,14 +56,16 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    display: flex;
+    flex-wrap: nowrap;
 }
 .footer {
   position: relative;
   display: block;
   bottom: 0;
-  width: 100%;
+  width: 33%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
@@ -80,7 +82,7 @@ header#header {
     left: auto;
     float: left;
     display: block;
-    width: 25%;
+    width: 20%;
 }
 main.pb-3 {
     position: relative;
@@ -100,4 +102,22 @@ a.nav-link {
 }
 a.current {
     color: #6fb0b7;
+}
+#tag-for-posts {
+    display: block;
+    z-index: 3;
+    background-color: #212529;
+    border-radius: 8px;
+    color: white;
+    line-height: normal;
+    padding: 10px;
+    margin: auto;
+}
+#tag-for-posts .user-posts {   
+    border: none;
+    padding: 4px 10px 4px 10px;
+}
+.hide {
+    visibility: hidden;
+    display: flex;
 }

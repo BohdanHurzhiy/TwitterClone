@@ -58,6 +58,7 @@ namespace TwitterClone.ASP
             services.AddControllersWithViews();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ITagService, TagService>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -113,6 +114,12 @@ namespace TwitterClone.ASP
                 endpoints.MapControllerRoute(
                     name: "postsUser",
                     pattern: "{controller=Post}/{action=GetPostForUserAsync}");
+            });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "tag",
+                    pattern: "{controller=Tag}/{action=SearchByTag}");
             });
 
 

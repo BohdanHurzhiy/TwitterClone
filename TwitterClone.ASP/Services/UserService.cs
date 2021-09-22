@@ -91,6 +91,7 @@ namespace TwitterClone.ASP.Services
             var posts = followings
                 .SelectMany(u => _dbTwitterContex.Posts
                 .Include(p => p.Tags)
+                .Include(p => p.User)
                 .Where(p => p.UserId == u))                
                 .Distinct()                
                 .ToList();

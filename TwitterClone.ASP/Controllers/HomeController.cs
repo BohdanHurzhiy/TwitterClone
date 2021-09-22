@@ -39,15 +39,24 @@ namespace TwitterClone.ASP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var idUserClaims = (HttpContext.User.Claims.ToArray())[0].Value;           
-            var user = _userService.GetUser(idUserClaims);
-            
-            ViewBag.IdUser = idUserClaims;
-            ViewBag.nameUser = user.Name;
+            var idUserClaims = (HttpContext.User.Claims.ToArray())[0].Value;
+            try
+            {
+                var user = _userService.GetUser(idUserClaims);
 
-            var numPost = 10;
+                ViewBag.IdUser = idUserClaims;
+                ViewBag.nameUser = user.Name;
+
+                var numPost = 10;
+                return View("Home", user);
+            }
+            catch (NullReferenceException e)
+            {
+                _signInManager.SignOutAsync();
+            }
+            return View("Home");
             // var posts = _userService.GetPostsForUser(idUserClaims, numPost);
-            return View("Home", user);
+
         }
 
         [HttpPost]

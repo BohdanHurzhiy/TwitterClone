@@ -19,7 +19,7 @@ namespace TwitterClone.ASP.Models
 
         public DbTwitterCloneContex(DbContextOptions<DbTwitterCloneContex> options)
             : base(options)
-        {    
+        {           
             Database.EnsureCreated();
         }
 

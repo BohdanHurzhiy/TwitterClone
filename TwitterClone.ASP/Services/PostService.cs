@@ -28,7 +28,7 @@ namespace TwitterClone.ASP.Services
                 throw new ArgumentException();
             }
 
-            Post post = new Post() { UserId = idUser };
+            Post post = new () { UserId = idUser, User = user };
             _dbTwitterContex.Posts.Add(post);
             _dbTwitterContex.SaveChanges();
 
@@ -219,32 +219,27 @@ namespace TwitterClone.ASP.Services
         {
             string textPostWithOutTags = text;
 
-            var strWithTag = text.Split('#');
-            if (strWithTag.Length == 0)
+            while (textPostWithOutTags.Contains('#'))
             {
-                return " ";
-            }
-
-            foreach (var tagStr in strWithTag)
-            {
-                if (tagStr != "")
+                string strTag;
+                string textBeforeTag = "";
+                var indexTag = textPostWithOutTags.IndexOf('#');
+                var indexSpace = textPostWithOutTags.IndexOf(' ');
+                
+                if (indexTag != -1)
                 {
-                    var tagToBase = tagStr;
-                    var iSpace = tagStr.IndexOf(' ');
-                    if (iSpace != -1)
-                    {
-                        string tagStrSubStr = tagStr.Substring(0, iSpace + 1);
-                        textPostWithOutTags = tagStr.Substring(iSpace + 1);
-                        tagToBase = tagStrSubStr;
-                    }
-
-                    Tag tag = new() { TagsText = tagToBase };
+                    textBeforeTag = textPostWithOutTags.Substring(0, indexTag);
+                    strTag = textPostWithOutTags.Substring(indexTag + 1, indexSpace);
+                    
+                    Tag tag = new() { TagsText = strTag.Trim() };
                     AddTagToBase(tag);
-                    int tagId = GetTagId(tagToBase);
+                    int tagId = GetTagId(tag.TagsText);
                     AddTagForPost(idPost, tagId);
                 }
+
+                textPostWithOutTags = textBeforeTag + textPostWithOutTags.Substring(indexSpace + 1);
             }
-            return textPostWithOutTags;
+            return textPostWithOutTags.Trim();           
         }
     }
 }
