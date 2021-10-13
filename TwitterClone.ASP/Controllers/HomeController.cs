@@ -46,8 +46,7 @@ namespace TwitterClone.ASP.Controllers
 
                 ViewBag.IdUser = idUserClaims;
                 ViewBag.nameUser = user.Name;
-
-                var numPost = 10;
+               
                 return View("Home", user);
             }
             catch (NullReferenceException e)

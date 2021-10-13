@@ -34,9 +34,9 @@ namespace TwitterClone.ASP.Controllers
             return View(post);
         }
 
-        public IActionResult GetPostForUser(string id, int numberPosts)
+        public IActionResult GetPostForUser(string id, int numberPage, int numberOfPosts)
         {
-            var posts = _userService.GetPostsForUser(id, numberPosts);
+            var posts = _userService.GetPageUserPosts(id, numberPage, numberOfPosts);
             return PartialView("GetPostsPartial", posts);
         }
 

@@ -29,7 +29,6 @@ namespace TwitterClone.ASP.Controllers
             }
             catch (NullReferenceException e)
             {
-                ViewBag.ErrorrMessage = "This tag not found";
                 return PartialView("GetPostsPartial", posts);
             }
             return PartialView("GetPostsPartial", posts);

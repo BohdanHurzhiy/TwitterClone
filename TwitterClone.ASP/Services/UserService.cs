@@ -284,5 +284,22 @@ namespace TwitterClone.ASP.Services
             var posts = await Task.Run(()=> GetPostsForUser(idUser, numberOfPost));
             return posts;
         }
+
+        public ICollection<Post> GetPageUserPosts(string idUser, int numberPage, int numberOfPosts = 10)
+        {
+            var user = _dbTwitterContex.Users
+                .Where(u => u.Id == idUser)
+                .FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+            var posts = _dbTwitterContex.Posts
+                .Where(p => p.UserId == idUser)
+                .Skip((numberPage - 1) * numberOfPosts)
+                .Take(numberOfPosts)
+                .ToList();
+            return posts;
+        }
     }   
 }

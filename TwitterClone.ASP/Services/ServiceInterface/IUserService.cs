@@ -20,6 +20,7 @@ namespace TwitterClone.ASP.Services.ServiceInterface
 
         ICollection<Post> GetUserPosts(string idUser, int numberOfPost);
 
+        ICollection<Post> GetPageUserPosts(string idUser, int numberPage, int numberOfPosts);
 
         ICollection<User> GetFollowers(string idUser);
 
