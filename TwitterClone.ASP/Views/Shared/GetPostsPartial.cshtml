@@ -1,32 +1,30 @@
 ﻿@model ICollection<TwitterClone.ASP.Models.Post>
-<div class="partial-post-user">
-    @if (Model != null)
+@if (Model != null)
+{
+    @foreach (Post post in Model)
     {
-        @foreach (Post post in Model)
+    <div class="user-posts">
+        <span class="label-post-id">Id Post</span>
+        <p class="post-id">
+            <a href="~/Post/@post.Id">Post Id</a>
+        </p>
+        <span class="label-post-user-id">Post User Id </span>
+        <p class="post-user-id">
+            <a href="~/@post.User.Alias">@post.User.Alias</a>
+        </p>
+        <span> Text Post </span><p class="post-text">@post.TextPost</p>
+        @if (post.Tags.Count != 0)
         {
-        <div class="user-posts">
-            <span class="label-post-id">Id Post</span>
-            <p class="post-id">
-                <a href="~/Post/@post.Id">Post Id</a>
-            </p>
-            <span class="label-post-user-id">Post User Id </span>
-            <p class="post-user-id">
-                <a href="~/@post.User.Alias">@post.User.Alias</a>
-            </p>
-            <span> Text Post </span><p class="post-text">@post.TextPost</p>
-            @if (post.Tags.Count != 0)
-            {
-                <div class="tags-post">
-                    @foreach (Tag tag in post.Tags)
-                    {
-                        <a href="@tag.TagsText">@tag.TagsText</a> 
-                    }
-                </div>
-            }
-        </div>
+            <div class="tags-post">
+                @foreach (Tag tag in post.Tags)
+                {
+                    <a href="@tag.TagsText">@tag.TagsText</a> 
+                }
+            </div>
         }
+    </div>
     }
-    else { 
-        <span class="post-text"> @ViewBag.ErrorrMessage</span>
-    }
-</div>
+}
+else { 
+    <span class="post-text"> @ViewBag.ErrorrMessage</span>
+}

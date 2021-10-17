@@ -294,11 +294,28 @@ namespace TwitterClone.ASP.Services
             {
                 throw new ArgumentException();
             }
-            var posts = _dbTwitterContex.Posts
-                .Where(p => p.UserId == idUser)
+            var followings = _dbTwitterContex.Relationships
+                .Where(r => r.FollowerId == user.Id)
+                .Select(f => f.FollowedId)
+                .ToList();
+
+            followings.Add(idUser);
+
+            var posts = followings
+                .SelectMany(u => _dbTwitterContex.Posts
+                .Include(p => p.Tags)
+                .Include(p => p.User)
+                .Where(p => p.UserId == u))
+                .Distinct()
+                .OrderByDescending(p => p.PublicationDate)
                 .Skip((numberPage - 1) * numberOfPosts)
                 .Take(numberOfPosts)
-                .ToList();
+                .ToList();           
+            //    .Where(p => p.UserId == idUser)
+            //    .OrderByDescending(p => p.PublicationDate)
+            //    .Skip((numberPage - 1) * numberOfPosts)
+            //    .Take(numberOfPosts)
+            //    .ToQueryString();
             return posts;
         }
     }   

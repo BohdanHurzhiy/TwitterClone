@@ -46,13 +46,15 @@ namespace TwitterClone.ASP.Controllers
             return PartialView("GetPostsPartial", posts);
         }
 
-        public void AddPost(Post post)
+        public IActionResult AddPost(Post post)
         {
             if (post.TextPost == null)
             {
-                return;
+                return null;
             }
-            _postService.AddPost(post.UserId, post.TextPost);            
+            ICollection<Post> retPost = new List<Post>();
+            retPost.Add(_postService.AddPost(post.UserId, post.TextPost));
+            return PartialView("GetPostsPartial", retPost);
         }
     }
 }

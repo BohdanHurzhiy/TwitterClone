@@ -6,9 +6,9 @@
 		method: 'post',
 		dataType: 'html',
 		data: serdata,
-		success: function () {
+		success: function (post) {
 			$("#textPost").val(' ');
-			GetPostForUser();
+			$("#posts-body").prepend(post);			
         }
 	});
 });

@@ -14,7 +14,7 @@ namespace TwitterClone.ASP.Services
             _dbTwitterContex = dbTwitterContex;
         }
         
-        public int AddPost(string idUser, string text)
+        public Post AddPost(string idUser, string text)
         {
             var user = _dbTwitterContex.Users
                 .Where(u => u.Id == idUser)
@@ -42,7 +42,7 @@ namespace TwitterClone.ASP.Services
                 post.TextPost = textWithOutTags;
             }
             _dbTwitterContex.SaveChanges();
-            return post.Id;
+            return post;
         }
         
         public void RemovePost(int idPost)
