@@ -121,3 +121,8 @@ a.current {
     visibility: hidden;
     display: flex;
 }
+.logout {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+}

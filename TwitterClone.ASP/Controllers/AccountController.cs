@@ -132,7 +132,6 @@ namespace TwitterClone.ASP.Controllers
             await _signInManager.SignOutAsync();
             await HttpContext.SignOutAsync();
 
-            //var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
             var siteCookies = HttpContext.Request.Cookies.Keys;
             foreach (var cookie in siteCookies)
             {

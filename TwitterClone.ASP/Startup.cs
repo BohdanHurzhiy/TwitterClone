@@ -98,7 +98,7 @@ namespace TwitterClone.ASP
                         controller = "User",
                         action = "Index"
                     });
-            });
+            });            
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapControllerRoute(
@@ -121,7 +121,12 @@ namespace TwitterClone.ASP
                     name: "tag",
                     pattern: "{controller=Tag}/{action=SearchByTag}");
             });
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "Account",
+                    pattern: "{controller=Account}/{action=Logout}");
+            });
 
         }
     }

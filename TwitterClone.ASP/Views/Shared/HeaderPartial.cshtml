@@ -5,12 +5,15 @@
                 <div class="menu">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        
+
                         <a class="navbar-brand" asp-controller="Home" asp-action="Index">TwitterClone</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Overview">Overview</a>
                         <a class="nav-link" asp-controller="Home" asp-action="Notifications">Notifications</a>
                         <a class="nav-link" href="~/User/Index">Profile</a>
+                        <form class="logout" method="post" asp-controller="Account" asp-action="Logout">
+                            <input type="submit" class="btn btn-default" value="Logout"/>
+                        </form>
                     }
                 </div>
             </nav>
